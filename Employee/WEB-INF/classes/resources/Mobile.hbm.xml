@@ -1,0 +1,20 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+     <class name = "com.ideas2it.employeemanagement.model.Mobile" table = "mobile" >
+
+        <id name = "id"  column = "id" type = "int">
+            <generator class = "increment"/>
+        </id>
+       
+        <property name = "mobileNumber" column = "mobile_number" type = "long"/>
+        <property name = "countryCode" column = "country_code" type = "string"/>
+        <property name = "type" column = "type" type = "string"/>
+	  
+    </class>
+    
+</hibernate-mapping>	

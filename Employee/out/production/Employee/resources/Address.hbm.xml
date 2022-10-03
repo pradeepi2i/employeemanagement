@@ -1,0 +1,25 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+     <class name = "com.ideas2it.employeemanagement.model.Address" table = "address" >
+
+        <id name = "id"  column = "id" type = "int">
+            <generator class = "increment"/>
+        </id>
+       
+        <property name = "postalCode" column = "postal_code" type = "int"/>
+        <property name = "doorNumber" column = "door_number" type = "string"/>
+        <property name = "streetName" column = "street_name" type = "string"/>
+        <property name = "cityName" column = "city_name" type = "string"/>
+        <property name = "type" column = "type" type = "string"/>
+        <property name = "districtName" column = "district_name" type = "string"/>
+        <property name = "stateName" column = "state_name" type = "string"/>
+        <property name = "countryName" column = "country_name" type = "string"/>
+	  
+    </class>
+    
+</hibernate-mapping>	

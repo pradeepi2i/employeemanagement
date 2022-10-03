@@ -1,0 +1,55 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+     <class name = "com.ideas2it.employeemanagement.model.Employee" table = "employee" >
+
+        <id name = "id"  column = "id" type = "int">
+            <generator class = "increment"/>
+        </id>
+
+        <property name = "companyName" column = "company_name" type = "string"/>
+        <property name = "bankName" column = "bank_name" type = "string"/>
+        <property name = "previousExperience" column = "previous_experience" type = "float"/>
+        <property name = "salary" column = "salary" type = "float"/>
+        <property name = "accountNumber" column = "account_number" type = "long"/>
+        <property name = "firstName" column = "first_name" type = "string"/>
+        <property name = "lastName" column = "last_name" type = "string"/>
+        <property name = "gender" column = "gender" type = "string"/>
+        <property name = "dateOfBirth" column = "date_of_birth" type = "LocalDate"/>
+        <property name = "bloodGroup" column = "blood_group" type = "string"/>
+        <property name = "emailId" column = "e_mail" type = "string"/>
+        <property name = "dateOfJoining" column = "date_of_joining" type = "LocalDate"/>
+        <property name = "ifscCode" column = "ifsc_code" type = "string"/>
+        <property name = "designation" column = "designation" type = "string"/>
+   
+        <many-to-one name="workPlace" class="com.ideas2it.employeemanagement.model.WorkPlace"
+             column = "work_id"  unique = "true" not-null = "true" cascade = "save-update" lazy="false" fetch="select"/>
+
+        <set name="mobileNumbers" table="mobile" cascade="all"  lazy = "false" fetch="select">
+            <key>
+                <column name="employee_id" />
+            </key>
+            <one-to-many class="com.ideas2it.employeemanagement.model.Mobile" />
+        </set>
+
+        <set name="addresses" table="address" cascade="all" lazy = "false" fetch="select">
+            <key>
+                <column name="employee_id" />
+            </key>
+            <one-to-many class="com.ideas2it.employeemanagement.model.Address" />
+        </set>
+
+        <set name="projects" table="employee_project" cascade="merge" inverse="true" lazy = "false" fetch="select" >
+            <key>
+                <column name="employee_id" />
+            </key>
+            <many-to-many column ="project_id" class="com.ideas2it.employeemanagement.model.Project" />
+        </set>
+	  
+    </class>
+    
+</hibernate-mapping>	
