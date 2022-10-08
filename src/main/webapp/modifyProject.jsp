@@ -17,6 +17,7 @@
     <p>UPDATE PROJECT</p>
     <form modelAttribute = "projectDTO" action = "project/updateProject" method = "post">
 
+
         Project name : <input type = "text" value = "${name}" name = "name"><br>
         Domain : <input type = "text"  value = "${domain}" name = "domain"><br>
         Cost : <input type = "number" value = "${cost}" name = "cost"><br>

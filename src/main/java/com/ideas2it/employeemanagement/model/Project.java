@@ -1,19 +1,24 @@
 package com.ideas2it.employeemanagement.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "project")
 public class Project {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
+    @GenericGenerator(name = "native",strategy = "native")
     private int id;
     private double cost;
+    @Column(name = "project_name")
     private String name;
     private String domain;
     private String description;
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "employee_project",
             joinColumns = {@JoinColumn(name = "project_id")},
             inverseJoinColumns = {@JoinColumn(name = "employee_id")})

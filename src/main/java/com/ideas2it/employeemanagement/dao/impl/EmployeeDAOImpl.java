@@ -12,7 +12,9 @@ import com.ideas2it.employeemanagement.exception.CustomException;
 import com.ideas2it.employeemanagement.model.Employee;
 import com.ideas2it.employeemanagement.model.Mobile;
 import com.ideas2it.employeemanagement.model.Project;
-import org.hibernate.*;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -200,13 +202,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      * @return deleted id 
      * 
      */
-    @Transactional(rollbackFor = HibernateException.class, readOnly = true)
+    @Transactional(rollbackFor = HibernateException.class)
     public int deleteEmployeeById(int id) {
         session = sessionFactory.getCurrentSession();
         Employee employee = session.get(Employee.class, id);
         session.delete(employee);
         return id;
-
 
         /*
         session = sessionFactory.openSession();

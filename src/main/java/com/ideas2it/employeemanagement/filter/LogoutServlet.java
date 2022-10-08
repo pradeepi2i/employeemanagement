@@ -6,6 +6,9 @@
 
 package com.ideas2it.employeemanagement.filter;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,20 +17,18 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class LogoutServlet extends HttpServlet {
+@Controller
+public class LogoutServlet {
 
-    public void doPost(HttpServletRequest request,
-            HttpServletResponse response)
+    @RequestMapping("/logout")
+    public void loggingOut(HttpServletRequest request,
+                           HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        response.setContentType("text/html");
         HttpSession session = request.getSession(false);
 
         if (null != session) {
             session.invalidate();
-            out.println("Logged out Succesfully");
-            request.getRequestDispatcher("login.html")
+            request.getRequestDispatcher("login.jsp")
                     .include(request, response);
 
         }

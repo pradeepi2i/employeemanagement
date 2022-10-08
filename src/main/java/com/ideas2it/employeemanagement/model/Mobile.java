@@ -6,10 +6,7 @@
 
 package com.ideas2it.employeemanagement.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * <p>
@@ -23,12 +20,15 @@ import javax.persistence.Id;
  * </p>
  */
 @Entity
+@Table(name = "mobile")
 public class Mobile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(name = "mobile_number")
     private long mobileNumber;
+    @Column(name = "country_code")
     private String countryCode;
     private String type;
     

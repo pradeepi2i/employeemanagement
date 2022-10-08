@@ -6,10 +6,7 @@
 
 package com.ideas2it.employeemanagement.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * <p>
@@ -23,18 +20,26 @@ import javax.persistence.Id;
  * </p>
  */
 @Entity
+@Table(name = "address")
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(name = "postal_code")
     private int postalCode;
+    @Column(name = "door_number")
     private String doorNumber;
+    @Column(name = "street_name")
     private String streetName;
+    @Column(name = "city_name")
     private String cityName;
     private String type;
+    @Column(name = "district_name")
     private String districtName;
+    @Column(name = "state_name")
     private String stateName;
+    @Column(name = "country_name")
     private String countryName;
 
     // setters and getters

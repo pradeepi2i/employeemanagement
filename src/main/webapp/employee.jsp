@@ -1,15 +1,19 @@
 
-<!DOCTYPE html>
-<html lang="en">
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
+<%@ page language = "java" contentType = "text/html; charset = UTF-8"
+    pageEncoding="UTF-8"%>
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Employee Management</title>
 </head>
 <body>
 
-<form action = "employee/create" >
+<!--form action = "employee/create" >
     <input type="submit" value="Add Employee" name = "operation">
-</form><br>
+</form--><br>
+<button><a href="create.jsp" style="text-decoration:none">Add Employee</a></button>
 
 <p>SEARCH EMPLOYEE</p>
 <form action = "employee/search" method="get" >

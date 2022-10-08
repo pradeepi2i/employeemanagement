@@ -29,21 +29,16 @@ import java.util.List;
  *   @author : Pradeep
  * </p>
  */
-@RestController
-@RequestMapping(value = "/employee")
+@Controller
 public class EmployeeController {
 
-    public EmployeeController() {}
-    @Autowired
     private EmployeeService employeeServiceImpl;
-    private ModelAndView modelAndView = new ModelAndView("show.jsp");
+    private static Logger logger = LoggerConfiguration
+            .getInstance("EmployeeController.class");
 
     public EmployeeController(EmployeeService employeeServiceImpl) {
         this.employeeServiceImpl = employeeServiceImpl;
     }
-
-    private static Logger logger = LoggerConfiguration
-            .getInstance("EmployeeController.class");
 
     @GetMapping("/create")
     public ModelAndView addEmployee() {
@@ -53,37 +48,13 @@ public class EmployeeController {
 
     /**
      * <p>
-     *   Used to forward the employeeDTO along with
-     *   request object through request dispatcher
-     * </p>
-     *
-     * @param id id to be updated
-     */
-    @GetMapping("/update")
-    private ModelAndView updateDispatch(@PathVariable("id") int id) {
-
-        if (0 != id) {
-            EmployeeDTO employeeDTO = employeeServiceImpl
-                    .searchEmployeeById(id);
-
-            if (null != employeeDTO) {
-                ModelAndView modelAndView = new ModelAndView("/modify.jsp");
-                modelAndView.addObject("employee", employeeDTO);
-            }
-        }
-        return new ModelAndView().addObject("Employee not found");
-    }
-
-    /**
-     * <p>
      *   Create employee by using the request get from user
      * </p>
      *
      * @param employeeDTO employee details get from user
      */
-    @PostMapping("/add")
+    @PostMapping("/employee/add")
     public ModelAndView createEmployee(@ModelAttribute("employee") EmployeeDTO employeeDTO) {
-//        ModelAndView modelAndView = new ModelAndView();
         String emailId = "";
         boolean isValid = false;
 
@@ -110,7 +81,7 @@ public class EmployeeController {
                 employeeDTO.getSalary(), employeeDTO.getWorkPlace(), employeeDTO.getMobileNumbers(),
                 employeeDTO.getAddresses());
         logger.info("Employee created with Id " + id);
-        return new ModelAndView("show").addObject("message", "Employee Created");
+        return new ModelAndView("addEmployee").addObject("message", "Employee Created");
     }
 
     /**
@@ -120,27 +91,51 @@ public class EmployeeController {
      * </p>     
      *response.setContentType("text/html");
      */
-    @GetMapping("/search/{id}")
-    public ModelAndView searchEmployee(@PathVariable("id") int id) {
-        ModelAndView modelAndView = new ModelAndView();
+    @GetMapping("/employee/search")
+    @ResponseBody
+    public ModelAndView searchEmployee(@RequestParam("id") int id) {
         EmployeeDTO employeeDTO = employeeServiceImpl
                 .searchEmployeeById(id);
 
         if (null != employeeDTO) {
-            return printEmployee(employeeDTO);
+            return new ModelAndView("/searchEmployee").addObject("employeeDTO", employeeDTO);
+          //  return printEmployee(employeeDTO);
         }
         logger.info("Employee not found");
-        return modelAndView.addObject("error",
+        return new ModelAndView("/searchEmployee").addObject("error",
                 "Employee not found");
-    }  
+    }
+
+    /**
+     * <p>
+     *   Used to forward the employeeDTO along with
+     *   request object through request dispatcher
+     * </p>
+     *
+     * @param id id to be updated
+     */
+    @GetMapping("/employee/update")
+    @ResponseBody
+    private ModelAndView updateDispatch(@RequestParam("id") int id) {
+        if (0 != id) {
+            EmployeeDTO employeeDTO = employeeServiceImpl
+                    .searchEmployeeById(id);
+
+            if (null != employeeDTO) {
+                return new ModelAndView("/modify").addObject("employeeDTO", employeeDTO);
+            }
+        }
+        return new ModelAndView("/addEmployee").addObject("Employee not found");
+    }
 
     /**
      * <p>
      *   Used to update address 
      * </p>
      */
-    @PostMapping("/updateEmployee")
-    public ModelAndView updateEmployee(@ModelAttribute("employee") EmployeeDTO employeeDTO) {
+    @PostMapping("/employee/updateEmployee")
+    @ResponseBody
+    public ModelAndView updateEmployee(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO) {
         ModelAndView modelAndView = new ModelAndView();
         int id = employeeServiceImpl.updateEmployee(employeeDTO);
         logger.info("Employee id : " + id + " Updated ");
@@ -155,18 +150,19 @@ public class EmployeeController {
      * </p>
      *
      */
-    @GetMapping("/delete/{id}")
-    public ModelAndView deleteEmployee(@PathVariable("id") int id) {
+    @GetMapping("/employee/delete")
+    @ResponseBody
+    public ModelAndView deleteEmployee(@RequestParam("id") int id) {
         EmployeeDTO employeeDTO = employeeServiceImpl.searchEmployeeById(id);
 
         if (null != employeeDTO) {
 
             if ( 0 != employeeServiceImpl.deleteEmployeeById(id)) {
                 logger.info("Employee id : " + id + " deleted");
-                return modelAndView.addObject("Employee deleted");
+                return new ModelAndView("/addEmployee").addObject("message", "Employee deleted");
             }
         }
-        return modelAndView.addObject("Employee not found, Unable to delete");
+        return new ModelAndView("/addEmployee").addObject("message", "Employee not found, Unable to delete");
     }
 
     /**

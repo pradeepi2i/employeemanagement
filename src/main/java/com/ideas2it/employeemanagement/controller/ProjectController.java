@@ -13,6 +13,8 @@ import com.ideas2it.employeemanagement.service.EmployeeService;
 import com.ideas2it.employeemanagement.service.ProjectService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -30,16 +32,14 @@ import java.util.Set;
  *   @author : Pradeep
  * </p>
  */
-@RestController
+@Controller
 public class ProjectController {
 
-    private final EmployeeService employeeServiceImpl;
-
-    private final ProjectService projectServiceImpl;
-    private static Logger logger = LoggerConfiguration
+    private EmployeeService employeeServiceImpl;
+    private ProjectService projectServiceImpl;
+    private static final Logger logger = LoggerConfiguration
             .getInstance("ProjectController.class");
 
-    @Autowired
     public ProjectController(EmployeeService employeeServiceImpl,
                              ProjectService projectServiceImpl) {
         this.employeeServiceImpl = employeeServiceImpl;
@@ -47,9 +47,10 @@ public class ProjectController {
     }
 
     //@PostMapping(value = "project/create")
-    @RequestMapping(value = "/project/create", method = RequestMethod.GET)
+    @RequestMapping("/project/create")
+    @ResponseBody
     public ModelAndView addProject() {
-        return new ModelAndView("createProject","project", new ProjectDTO());
+        return new ModelAndView("/createProject");
     }
 
     /**
@@ -59,14 +60,36 @@ public class ProjectController {
      *
      * @param projectDTO project details get from the user
      */
-    @PostMapping(value = "/project/addProject")
-    public void createProject(@ModelAttribute("project") ProjectDTO projectDTO) {
-        //ModelAndView modelAndView = new ModelAndView();
+    @PostMapping("/management/project/addProject")
+    public ModelAndView createProject(@ModelAttribute("projectDTO") ProjectDTO projectDTO) {
         int id = projectServiceImpl.addProject(projectDTO.getName(), projectDTO.getDomain(),
                 projectDTO.getCost(), projectDTO.getDescription());
         logger.info("Project Id created " + id);
-        //return modelAndView.addObject("message", "Project Created");
+        return new ModelAndView("/addProject").addObject("message", id);
     }
+
+    /**
+     * <p>
+     *   Search project by using id, when search
+     *   found will display the details of that project
+     * </p>
+     *
+     */
+    @GetMapping("/management/project/searchProject")
+    @ResponseBody
+    public ModelAndView searchProject(@RequestParam("id") int id) {
+        ProjectDTO projectDTO = projectServiceImpl
+                .searchProjectById(id);
+
+        if (null != projectDTO) {
+            // return printProject(projectDTO);
+            return new ModelAndView("/searchProject").addObject("projectDTO", projectDTO);
+        }
+        logger.info("Project not found");
+        return new ModelAndView("/searchProject").addObject("error",
+                "Project not found");
+    }
+
 
     /**
      * <p>
@@ -74,9 +97,10 @@ public class ProjectController {
      * </p> 
      *
      */
-    @GetMapping(value = "project/assign/{id}/{employeeId}")
-    public ModelAndView assignEmployee(@PathVariable("id") int id,
-            @PathVariable("employeeId") int employeeId) {
+    @GetMapping("/management/project/assign")
+    @ResponseBody
+    public ModelAndView assignEmployee(@RequestParam("id") int id,
+            @RequestParam("employeeId") int employeeId) {
         ModelAndView modelAndView = new ModelAndView();
 
         ProjectDTO projectDTO = projectServiceImpl.searchProjectById(id);
@@ -122,48 +146,24 @@ public class ProjectController {
 
     /**
      * <p>
-     *   Search project by using id, when search
-     *   found will display the details of that project
-     * </p>     
-     *
-     */
-    @GetMapping(value = "/project/searchProject/{id}")
-    public ModelAndView searchProject(@PathVariable("id") int id) {
-        ModelAndView modelAndView = new ModelAndView();
-        ProjectDTO projectDTO = projectServiceImpl
-                .searchProjectById(id);
-        logger.info("In search project URL");
-
-        if (null != projectDTO) {
-            return printProject(projectDTO);
-        }
-        logger.info("Project not found");
-        return modelAndView.addObject("error",
-                "Project not found");
-    }
-
-    /**
-     * <p>
      *   Used to forward the employeeDTO along with
      *   request object through request dispatcher
      * </p>
      *
      * @param id id to be updated
      */
-    @GetMapping(value = "project/modifyProject/{id}")
-    private ModelAndView updateDispatch(@PathVariable("id") int id) {
-        ModelAndView modelAndView = new ModelAndView();
-
+    @GetMapping("/management/project/modifyProject")
+    @ResponseBody
+    private ModelAndView updateDispatch(@RequestParam("id") int id) {
         if (0 != id) {
             ProjectDTO projectDTO = projectServiceImpl
                     .searchProjectById(id);
 
             if (null != projectDTO) {
-                modelAndView = new ModelAndView("modifyProject");
-                modelAndView.addObject("project", projectDTO);
+                return new ModelAndView("/modifyProject").addObject("projectDTO", projectDTO);
             }
         }
-        return modelAndView.addObject("error", "Project not found");
+        return new ModelAndView("/addProject").addObject("message", "Project not found");
     }
 
     /**
@@ -174,12 +174,12 @@ public class ProjectController {
      * </p> 
      *
      */
-    @PostMapping(value = "project/updateProject")
-    public ModelAndView updateProject(@ModelAttribute("project") ProjectDTO projectDTO) {
-        ModelAndView modelAndView = new ModelAndView();
+    @RequestMapping(value = "/management/project/updateProject")
+    @ResponseBody
+    public ModelAndView updateProject(@ModelAttribute("projectDTO") ProjectDTO projectDTO) {
         int id = projectServiceImpl.updateProject(projectDTO);
         logger.info("Project id : " + id + " Updated ");
-        return modelAndView.addObject("message", "Project Updated");
+        return new ModelAndView("/addProject").addObject("message", "Project Updated");
     }
  
     /**
@@ -190,10 +190,11 @@ public class ProjectController {
      * </p>          
      *
      */
-    @GetMapping(value = "project/deleteProject/{id}")
-    public ModelAndView deleteProject(@PathVariable("id") int id) {
+    @RequestMapping(value = "/management/project/deleteProject")
+    @ResponseBody
+    public ModelAndView deleteProject(@RequestParam("id") int id) {
         ProjectDTO projectDTO = projectServiceImpl.searchProjectById(id);
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("/addProject");
       
         if (null != projectDTO) {
 
@@ -211,8 +212,9 @@ public class ProjectController {
      *   Print employee details 
      * </p>
      */
+    @ResponseBody
     private ModelAndView printProject(ProjectDTO projectDTO) {
-        ModelAndView modelAndView = new ModelAndView("display.jsp");
-        return modelAndView.addObject("project", projectDTO);
+        ModelAndView modelAndView = new ModelAndView("display");
+        return modelAndView.addObject("projectDTO", projectDTO);
     }
 }

@@ -21,24 +21,35 @@ import java.util.Set;
  * </p>
  */
 @Entity
+@Table(name = "employee")
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(name = "company_name")
     protected static String companyName = "Ideas2IT";
-    protected static String bankName = "HDFC";    
+    @Column(name = "bank_name")
+    protected static String bankName = "HDFC";
+    @Column(name = "previous_experience")
     private float previousExperience;    
-    private float salary; 
+    private float salary;
+    @Column(name = "account_number")
     private long accountNumber;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
     private String gender;
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+    @Column(name = "blood_group")
     private String bloodGroup;
     @Column(name = "e_mail")
     private String emailId;
+    @Column(name = "date_of_joining")
     private LocalDate dateOfJoining;
+    @Column(name = "ifsc_code")
     private String ifscCode; 
     private String designation;
     @OneToOne(cascade=CascadeType.ALL)
