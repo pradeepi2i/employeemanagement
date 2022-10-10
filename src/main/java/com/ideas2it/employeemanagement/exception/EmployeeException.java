@@ -16,12 +16,12 @@ package com.ideas2it.employeemanagement.exception;
  *   @author : Pradeep
  * </p>
  */
-public class CustomException extends RuntimeException {
+public class EmployeeException extends RuntimeException {
 
-    public CustomException(String error, Throwable clause) {
+    public EmployeeException(String error, Throwable clause) {
         super(error, clause);
     }
-    public CustomException(String error) {
+    public EmployeeException(String error) {
         super(error);
     }
 

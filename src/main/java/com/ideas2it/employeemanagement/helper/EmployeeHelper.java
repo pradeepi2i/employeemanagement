@@ -36,16 +36,22 @@ public class EmployeeHelper {
      */
     public static EmployeeDTO convertEmployeeIntoEmployeeDTO
             (Employee employee) {
-        EmployeeDTO employeeDTO = new EmployeeDTO(
-                employee.getFirstName(), employee.getLastName(),
-                employee.getGender(), employee.getDateOfBirth(),
-                employee.getBloodGroup(), employee.getEmailId(),
-                employee.getDateOfJoining(), employee.getAccountNumber(),
-                employee.getIfscCode(), employee.getDesignation(),
-                employee.getPreviousExperience(), employee.getSalary(),
-                employee.getWorkPlace(), employee.getMobileNumbers(),
-                employee.getAddresses());
-        employeeDTO.setId(employee.getId());
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setFirstName(employee.getFirstName());
+        employeeDTO.setLastName(employee.getLastName());
+        employeeDTO.setGender(employee.getGender());
+        employeeDTO.setDateOfBirth(employee.getDateOfBirth());
+        employeeDTO.setBloodGroup(employee.getBloodGroup());
+        employeeDTO.setEmailId(employee.getEmailId());
+        employeeDTO.setDateOfJoining(employee.getDateOfJoining());
+        employeeDTO.setAccountNumber(employee.getAccountNumber());
+        employeeDTO.setIfscCode(employee.getIfscCode());
+        employeeDTO.setDesignation(employee.getDesignation());
+        employeeDTO.setPreviousExperience(employee.getPreviousExperience());
+        employeeDTO.setSalary(employee.getSalary());
+        employeeDTO.setWorkPlace(employee.getWorkPlace());
+        employeeDTO.setMobileNumbers(employee.getMobileNumbers());
+        employeeDTO.setAddresses(employee.getAddresses());
         Set<ProjectDTO> projectsDTO = new HashSet<>();
         Set<Project> projects = employee.getProjects();
 
@@ -58,7 +64,7 @@ public class EmployeeHelper {
                 projectHelperDTO.setId(project.getId());
                 projectsDTO.add(projectHelperDTO);       
             }
-            employeeDTO.setProjects(projectsDTO);
+          //  employeeDTO.setProjects(projectsDTO);
         }
         return employeeDTO;
     }
@@ -72,17 +78,23 @@ public class EmployeeHelper {
      * @return converted employee
      */
     public static Employee convertEmployeeDTOIntoEmployee
-            (EmployeeDTO employeeDTO) {       
-        Employee employee = new Employee(
-                employeeDTO.getFirstName(), employeeDTO.getLastName(),
-                employeeDTO.getGender(), employeeDTO.getDateOfBirth(),
-                employeeDTO.getBloodGroup(), employeeDTO.getEmailId(),
-                employeeDTO.getDateOfJoining(), employeeDTO.getAccountNumber(),
-                employeeDTO.getIfscCode(), employeeDTO.getDesignation(), 
-                employeeDTO.getPreviousExperience(),
-                employeeDTO.getSalary(), employeeDTO.getWorkPlace(),
-                employeeDTO.getMobileNumbers(), employeeDTO.getAddresses());
-        employee.setId(employeeDTO.getId());
+            (EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        employee.setFirstName(employeeDTO.getFirstName());
+        employee.setLastName(employeeDTO.getLastName());
+        employee.setGender(employeeDTO.getGender());
+        employee.setDateOfBirth(employeeDTO.getDateOfBirth());
+        employee.setBloodGroup(employeeDTO.getBloodGroup());
+        employee.setEmailId(employeeDTO.getEmailId());
+        employee.setDateOfJoining(employeeDTO.getDateOfJoining());
+        employee.setAccountNumber(employeeDTO.getAccountNumber());
+        employee.setIfscCode(employeeDTO.getIfscCode());
+        employee.setDesignation(employeeDTO.getDesignation());
+        employee.setPreviousExperience(employeeDTO.getPreviousExperience());
+        employee.setSalary(employeeDTO.getSalary());
+        employee.setWorkPlace(employeeDTO.getWorkPlace());
+        employee.setMobileNumbers(employeeDTO.getMobileNumbers());
+        employee.setAddresses(employeeDTO.getAddresses());
         Set<Project> projects = new HashSet<>();
         Set<ProjectDTO> projectsDTO = employeeDTO.getProjects();
 
@@ -96,7 +108,7 @@ public class EmployeeHelper {
                 projects.add(projectHelper);     
             }
             employee.setProjects(projects);
-        }        
+        }
         return employee;
     }
 }

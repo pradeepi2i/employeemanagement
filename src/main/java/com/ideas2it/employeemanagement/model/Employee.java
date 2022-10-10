@@ -6,9 +6,13 @@
 
 package com.ideas2it.employeemanagement.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
+
+import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 /**
  * <p>
@@ -52,7 +56,7 @@ public class Employee {
     @Column(name = "ifsc_code")
     private String ifscCode; 
     private String designation;
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne(targetEntity = WorkPlace.class)
     @JoinColumn(name = "work_id")
     private WorkPlace workPlace;
     @OneToMany(fetch = FetchType.LAZY)
@@ -61,13 +65,13 @@ public class Employee {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Set<Address> addresses;
-    @ManyToMany(mappedBy = "employees", fetch = FetchType.EAGER,
-            cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "employees", fetch = FetchType.EAGER)
+    //@Cascade(SAVE_UPDATE)
     private Set<Project> projects;
 
-    public Employee() {}
+    //public Employee() {}
 
-    public Employee(String firstName, String lastName,
+    /*public Employee(String firstName, String lastName,
             String gender, LocalDate dateOfBirth, String bloodGroup, 
             String emailId, LocalDate dateOfJoining, long accountNumber, 
             String ifscCode, String designation, float previousExperience,
@@ -89,7 +93,7 @@ public class Employee {
         this.workPlace = workPlace;
         this.mobileNumbers = mobileNumbers;
         this.addresses = addresses;
-    }
+    }*/
 
     // setters and getters
 

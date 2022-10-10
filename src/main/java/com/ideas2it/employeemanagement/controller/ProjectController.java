@@ -32,23 +32,23 @@ import java.util.Set;
  *   @author : Pradeep
  * </p>
  */
-@Controller
+@RestController
+@RequestMapping("management/project")
 public class ProjectController {
 
-    private EmployeeService employeeServiceImpl;
-    private ProjectService projectServiceImpl;
+    private EmployeeService employeeService;
+    private ProjectService projectService;
     private static final Logger logger = LoggerConfiguration
             .getInstance("ProjectController.class");
 
-    public ProjectController(EmployeeService employeeServiceImpl,
-                             ProjectService projectServiceImpl) {
-        this.employeeServiceImpl = employeeServiceImpl;
-        this.projectServiceImpl = projectServiceImpl;
+    public ProjectController(EmployeeService employeeService,
+                             ProjectService projectService) {
+        this.employeeService = employeeService;
+        this.projectService = projectService;
     }
 
     //@PostMapping(value = "project/create")
     @RequestMapping("/project/create")
-    @ResponseBody
     public ModelAndView addProject() {
         return new ModelAndView("/createProject");
     }
@@ -60,9 +60,9 @@ public class ProjectController {
      *
      * @param projectDTO project details get from the user
      */
-    @PostMapping("/management/project/addProject")
+    @PostMapping("addProject")
     public ModelAndView createProject(@ModelAttribute("projectDTO") ProjectDTO projectDTO) {
-        int id = projectServiceImpl.addProject(projectDTO.getName(), projectDTO.getDomain(),
+        int id = projectService.addProject(projectDTO.getName(), projectDTO.getDomain(),
                 projectDTO.getCost(), projectDTO.getDescription());
         logger.info("Project Id created " + id);
         return new ModelAndView("/addProject").addObject("message", id);
@@ -75,10 +75,9 @@ public class ProjectController {
      * </p>
      *
      */
-    @GetMapping("/management/project/searchProject")
-    @ResponseBody
+    @GetMapping("searchProject")
     public ModelAndView searchProject(@RequestParam("id") int id) {
-        ProjectDTO projectDTO = projectServiceImpl
+        ProjectDTO projectDTO = projectService
                 .searchProjectById(id);
 
         if (null != projectDTO) {
@@ -97,18 +96,17 @@ public class ProjectController {
      * </p> 
      *
      */
-    @GetMapping("/management/project/assign")
-    @ResponseBody
+    @GetMapping("assign")
     public ModelAndView assignEmployee(@RequestParam("id") int id,
             @RequestParam("employeeId") int employeeId) {
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("/addProject");
 
-        ProjectDTO projectDTO = projectServiceImpl.searchProjectById(id);
+        ProjectDTO projectDTO = projectService.searchProjectById(id);
         Set<EmployeeDTO> employees;
         Set<ProjectDTO> projects;
 
         if (null != projectDTO) {
-            EmployeeDTO employeeDTO = employeeServiceImpl
+            EmployeeDTO employeeDTO = employeeService
                     .searchEmployeeById(employeeId);
 
             if (null != employeeDTO) {
@@ -121,17 +119,17 @@ public class ProjectController {
                     employees.add(employeeDTO);
                 }
 
-                if (null != employeeDTO.getProjects()) {
+                /*if (null != employeeDTO.getProjects()) {
                     projects = employeeDTO.getProjects();
                     projects.add(projectDTO);
                 } else {
                     projects = new HashSet<>();
                     projects.add(projectDTO);
-                }
+                }*/
                 projectDTO.setEmployees(employees);
-                employeeDTO.setProjects(projects);
-                id = projectServiceImpl.updateProject(projectDTO);
-                employeeId = employeeServiceImpl
+                //employeeDTO.setProjects(projects);
+                id = projectService.updateProject(projectDTO);
+                employeeId = employeeService
                         .updateEmployee(employeeDTO);
                 logger.info("Project " + id + " assigned to Employee "
                         + employeeId);
@@ -152,11 +150,10 @@ public class ProjectController {
      *
      * @param id id to be updated
      */
-    @GetMapping("/management/project/modifyProject")
-    @ResponseBody
+    @GetMapping("modifyProject")
     private ModelAndView updateDispatch(@RequestParam("id") int id) {
         if (0 != id) {
-            ProjectDTO projectDTO = projectServiceImpl
+            ProjectDTO projectDTO = projectService
                     .searchProjectById(id);
 
             if (null != projectDTO) {
@@ -174,10 +171,9 @@ public class ProjectController {
      * </p> 
      *
      */
-    @RequestMapping(value = "/management/project/updateProject")
-    @ResponseBody
+    //@PostMapping(value = "updateProject")
     public ModelAndView updateProject(@ModelAttribute("projectDTO") ProjectDTO projectDTO) {
-        int id = projectServiceImpl.updateProject(projectDTO);
+        int id = projectService.updateProject(projectDTO);
         logger.info("Project id : " + id + " Updated ");
         return new ModelAndView("/addProject").addObject("message", "Project Updated");
     }
@@ -190,15 +186,14 @@ public class ProjectController {
      * </p>          
      *
      */
-    @RequestMapping(value = "/management/project/deleteProject")
-    @ResponseBody
+    @RequestMapping(value = "deleteProject")
     public ModelAndView deleteProject(@RequestParam("id") int id) {
-        ProjectDTO projectDTO = projectServiceImpl.searchProjectById(id);
+        ProjectDTO projectDTO = projectService.searchProjectById(id);
         ModelAndView modelAndView = new ModelAndView("/addProject");
       
         if (null != projectDTO) {
 
-            if (0 != projectServiceImpl.deleteProjectById(id)) {
+            if (0 != projectService.deleteProjectById(id)) {
                 logger.info("Project id : " + id + " deleted");
                 return modelAndView.addObject("message", "Project deleted");
             }
@@ -212,7 +207,6 @@ public class ProjectController {
      *   Print employee details 
      * </p>
      */
-    @ResponseBody
     private ModelAndView printProject(ProjectDTO projectDTO) {
         ModelAndView modelAndView = new ModelAndView("display");
         return modelAndView.addObject("projectDTO", projectDTO);

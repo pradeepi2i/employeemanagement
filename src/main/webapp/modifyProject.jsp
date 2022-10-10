@@ -15,13 +15,13 @@
 <div>
 
     <p>UPDATE PROJECT</p>
-    <form modelAttribute = "projectDTO" action = "project/updateProject" method = "post">
+    <form modelAttribute = "projectDTO" action = "updateProject" method = "post">
 
-
-        Project name : <input type = "text" value = "${name}" name = "name"><br>
-        Domain : <input type = "text"  value = "${domain}" name = "domain"><br>
-        Cost : <input type = "number" value = "${cost}" name = "cost"><br>
-        Description : <input type = "text" value = "${description}" name = "description"><br>
+        Project Id : <input type = "number" name = "id"><br>
+        Project name : <input type = "text" name = "name"><br>
+        Domain : <input type = "text"  name = "domain"><br>
+        Cost : <input type = "number" name = "cost"><br>
+        Description : <input type = "text" name = "description"><br>
         <input type="submit" value="UpdateProject">
     </form>
 </div>

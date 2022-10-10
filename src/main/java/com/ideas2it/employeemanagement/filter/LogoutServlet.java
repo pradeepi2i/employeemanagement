@@ -20,7 +20,7 @@ import java.io.PrintWriter;
 @Controller
 public class LogoutServlet {
 
-    @RequestMapping("/logout")
+   /* @RequestMapping("/logout")
     public void loggingOut(HttpServletRequest request,
                            HttpServletResponse response)
             throws ServletException, IOException {
@@ -32,5 +32,5 @@ public class LogoutServlet {
                     .include(request, response);
 
         }
-    }
+    }*/
 }

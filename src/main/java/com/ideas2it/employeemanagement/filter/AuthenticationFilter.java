@@ -9,13 +9,9 @@ package com.ideas2it.employeemanagement.filter;
 import com.ideas2it.employeemanagement.logger.LoggerConfiguration;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -30,7 +26,7 @@ import java.io.IOException;
  * </p>
  */
 @Component
-public class CommonFilter implements Filter {
+public class AuthenticationFilter implements Filter {
 
     private static Logger logger = LoggerConfiguration
             .getInstance("CommonFilter.class");
@@ -62,13 +58,16 @@ public class CommonFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String name = (String) request.getSession().getAttribute("sessionName");
 
-        if (null != name) {
+
+       // String path = (String) request.getRequestURI().startsWith("/login");
+        /*if (request.getRequestURI().startsWith("/login")) {
+            filterChain.doFilter(request, servletResponse);
+        } else*/
+
+         if (null != name) {
             logger.info(name);
-            logger.info(request);
-            String requestName = (String) request.getAttribute("requestName");
-            logger.info(requestName);
-            boolean isLoggedIn = (request.getAttribute("requestName").equals(name));
-            //boolean isLoggedIn = (null != request.getSession(false));
+            logger.info(request.getSession().getAttribute("sessionName"));
+            boolean isLoggedIn = (null != request.getSession().getAttribute("sessionName"));
             logger.info("isLogged in " + isLoggedIn);
             logger.info("Session attribute " + name);
 
@@ -77,6 +76,7 @@ public class CommonFilter implements Filter {
                 filterChain.doFilter(request, servletResponse);
             }
         } else {
+             logger.info(name);
             logger.info("Doesn't Logged in and forward to login.jsp");
             request.getRequestDispatcher("/login").forward(servletRequest, servletResponse);
         }

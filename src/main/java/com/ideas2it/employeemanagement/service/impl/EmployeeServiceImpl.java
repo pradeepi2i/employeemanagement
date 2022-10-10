@@ -37,14 +37,10 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    public EmployeeServiceImpl() {
+    private EmployeeDAO employeeDAO;
 
-    }
-    @Autowired
-    private EmployeeDAO employeeDAOImpl;
-
-    public EmployeeServiceImpl(EmployeeDAO employeeDAOImpl) {
-        this.employeeDAOImpl = employeeDAOImpl;
+    public EmployeeServiceImpl(EmployeeDAO employeeDAO) {
+        this.employeeDAO = employeeDAO;
     }
     
     /**
@@ -52,36 +48,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      *   Add a employee by getting the following details
      * </p>
      *
-     * @param firstName employee's first name 
-     * @param lastName employee's last name 
-     * @param gender employee's gender 
-     * @param dateOfBirth employee's date of birth
-     * @param bloodGroup employee's blood group 
-     * @param emailId employee's email address
-     * @param dateOfJoining employee's date of joining
-     * @param accountNumber employee's account number
-     * @param ifscCode bank's IFSC code
-     * @param designation employee's designation
-     * @param experience employee's experience
-     * @param salary employee's annual CTC
-     * @param workPlace employee's work place
-     * @param mobileNumbers employee's mobile number
-     * @param addresses employee's addresses
+     * @param employeeDTO employee's details
      *
      * @return created id 
      */
-    public int addEmployee(String firstName, String lastName, String gender,
-            LocalDate dateOfBirth, String bloodGroup, String emailId,
-            LocalDate dateOfJoining, long accountNumber, String ifscCode, 
-            String designation, float experience, float salary, 
-            WorkPlace workPlace, Set<Mobile> mobileNumbers,
-            Set<Address> addresses) {
-       
-        EmployeeDTO employeeDTO = new EmployeeDTO(firstName, lastName,
-                gender, dateOfBirth, bloodGroup, emailId, dateOfJoining,
-                accountNumber, ifscCode, designation, experience, salary, 
-                workPlace, mobileNumbers, addresses);
-        Employee employee =  employeeDAOImpl.insertEmployee(EmployeeHelper
+    public int addEmployee(EmployeeDTO employeeDTO) {
+
+        Employee employee =  employeeDAO.insertEmployee(EmployeeHelper
                                      .convertEmployeeDTOIntoEmployee(
                                      employeeDTO));
         if (null != employee) {
@@ -98,7 +71,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return all employees
      */
     public Map<Integer, EmployeeDTO> displayAllEmployees() {
-        return employeeDAOImpl.retrieveAllEmployees().entrySet().stream()
+        return employeeDAO.retrieveAllEmployees().entrySet().stream()
                 .collect(Collectors.toMap(employee -> employee.getKey(),
                 employee -> EmployeeHelper
                 .convertEmployeeIntoEmployeeDTO(employee.getValue())));
@@ -115,7 +88,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      *
      */
     public EmployeeDTO searchEmployeeById(int id) { 
-        Employee employee = employeeDAOImpl.retrieveEmployeeById(id);   
+        Employee employee = employeeDAO.retrieveEmployeeById(id);
         return (null != employee) 
                 ? EmployeeHelper.convertEmployeeIntoEmployeeDTO(employee)
                 : null;
@@ -132,7 +105,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      *
      */
     public int updateEmployee(EmployeeDTO employeeDTO) {  
-        Employee employee = employeeDAOImpl.updateEmployee(EmployeeHelper
+        Employee employee = employeeDAO.updateEmployee(EmployeeHelper
                                     .convertEmployeeDTOIntoEmployee(
                                     employeeDTO));
         if (null != employee) {
@@ -152,7 +125,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      *
      */
     public int deleteEmployeeById(int id) {
-        return employeeDAOImpl.deleteEmployeeById(id);            
+        return employeeDAO.deleteEmployeeById(id);
     }
 
     /**
@@ -163,7 +136,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return list of mobile numbers
      */
     public List<Long> checkDuplicate() {
-        return employeeDAOImpl.checkDuplicate();
+        return employeeDAO.checkDuplicate();
     }
 
     /**
@@ -174,6 +147,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return list of email id
      */
     public List<String> checkDuplicateEmail() {
-        return employeeDAOImpl.checkDuplicateEmail();
+        return employeeDAO.checkDuplicateEmail();
     }
 } 

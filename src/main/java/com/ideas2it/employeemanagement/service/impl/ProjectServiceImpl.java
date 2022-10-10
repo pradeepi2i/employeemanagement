@@ -31,11 +31,10 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-    @Autowired
-    ProjectDAO projectDAOImpl;
+    ProjectDAO projectDAO;
 
-    public ProjectServiceImpl(ProjectDAO projectDAOImpl) {
-        this.projectDAOImpl = projectDAOImpl;
+    public ProjectServiceImpl(ProjectDAO projectDAO) {
+        this.projectDAO = projectDAO;
     }
     
     /**
@@ -53,7 +52,7 @@ public class ProjectServiceImpl implements ProjectService {
             String description) {
         ProjectDTO projectDTO = new ProjectDTO(projectName, domain,
                 cost, description);  
-        Project project = projectDAOImpl.insertProject(ProjectHelper
+        Project project = projectDAO.insertProject(ProjectHelper
                                   .convertProjectDTOIntoProject(
                                   projectDTO));
 
@@ -71,7 +70,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @return all projects
      */
     public Map<Integer, ProjectDTO> displayAllProjects() {
-        return projectDAOImpl.retrieveAllProjects().entrySet().stream()
+        return projectDAO.retrieveAllProjects().entrySet().stream()
                 .collect(Collectors.toMap(project -> project.getKey(),
                 project -> ProjectHelper
                 .convertProjectIntoProjectDTO(project.getValue())));
@@ -88,7 +87,7 @@ public class ProjectServiceImpl implements ProjectService {
      *
      */
     public ProjectDTO searchProjectById(int id) {
-        Project project = projectDAOImpl.retrieveProjectById(id);   
+        Project project = projectDAO.retrieveProjectById(id);
         return (null != project) 
                 ? ProjectHelper.convertProjectIntoProjectDTO(project)
                 : null;
@@ -105,7 +104,7 @@ public class ProjectServiceImpl implements ProjectService {
      *
      */
     public int updateProject(ProjectDTO projectDTO) {
-        Project project = projectDAOImpl.updateProject(ProjectHelper
+        Project project = projectDAO.updateProject(ProjectHelper
                                   .convertProjectDTOIntoProject(
                                   projectDTO));
 
@@ -126,7 +125,7 @@ public class ProjectServiceImpl implements ProjectService {
      *
      */
     public int deleteProjectById(int id) {
-        return projectDAOImpl.deleteProjectById(id);            
+        return projectDAO.deleteProjectById(id);
     }
 
 }

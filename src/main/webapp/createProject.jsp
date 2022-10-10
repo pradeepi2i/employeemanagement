@@ -1,9 +1,7 @@
 <jsp:include page="logout.jsp" />
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
 <%@ page language = "java" contentType = "text/html; charset = UTF-8"
     pageEncoding="UTF-8"%>
-
 
 <html>
 <head>
@@ -13,7 +11,7 @@
 <body>
 
 <p>CREATE PROJECT</p>
-<form modelAttribute = "projectDTO" action = "project/addProject" method = "post">
+<form modelAttribute = "projectDTO" action = "management/project/addProject" method = "post">
     <table>
         <tr>
             <td>Project Name:</td>

@@ -6,12 +6,8 @@
 
 package com.ideas2it.employeemanagement.dao.impl;
 
-import com.ideas2it.employeemanagement.connection.HibernateConfiguration;
 import com.ideas2it.employeemanagement.dao.EmployeeDAO;
-import com.ideas2it.employeemanagement.exception.CustomException;
 import com.ideas2it.employeemanagement.model.Employee;
-import com.ideas2it.employeemanagement.model.Mobile;
-import com.ideas2it.employeemanagement.model.Project;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,13 +38,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-    /*
-    private SessionFactory sessionFactory = HibernateConfiguration
-            .getInstance().getSessionFactory();
 
-    private Transaction transaction = null;
-
-     */
     private Session session = null;
 
     /**

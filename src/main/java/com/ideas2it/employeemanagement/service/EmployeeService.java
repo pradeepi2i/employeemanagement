@@ -35,30 +35,11 @@ public interface EmployeeService {
      *   Add a employee by getting the following details
      * </p>
      *
-     * @param firstName employee's first name 
-     * @param lastName employee's last name 
-     * @param gender employee's gender 
-     * @param dateOfBirth employee's date of birth
-     * @param bloodGroup employee's blood group 
-     * @param emailId employee's email address
-     * @param dateOfJoining employee's date of joining
-     * @param accountNumber employee's account number
-     * @param ifscCode bank's IFSC code
-     * @param designation employee's designation
-     * @param experience employee's experience
-     * @param salary employee's annual CTC 
-     * @param workPlace employee's work place
-     * @param mobileNumbers employee's mobile number
-     * @param addresses employee's addresses
+     * @param employeeDTO employee's details
      *
      * @return created id 
      */
-    public int addEmployee(String firstName, String lastName, String gender,
-            LocalDate dateOfBirth, String bloodGroup, String emailId,
-            LocalDate dateOfJoining, long accountNumber, String ifscCode,
-            String designation, float experience, float salary,
-            WorkPlace workPlace, Set<Mobile> mobileNumbers,
-            Set<Address> addresses);
+    public int addEmployee(EmployeeDTO employeeDTO);
 
     /**
      * <p>

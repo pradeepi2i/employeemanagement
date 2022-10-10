@@ -12,17 +12,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @Controller
-public class LoginServlet {
+public class Authentication {
 
     private static final Logger logger = LoggerConfiguration
             .getInstance("LoginServlet.class");
@@ -39,12 +38,27 @@ public class LoginServlet {
             session.setAttribute("sessionName", userName);
 
             logger.info("Login servlet after set attribute");
-            request.getRequestDispatcher("index.jsp")
+            request.getRequestDispatcher("index")
                     .forward(request, response);
         } else {
-            request.getRequestDispatcher("/login.jsp")
+            request.getRequestDispatcher("login")
                     .include(request, response);
         }
 
     }
+
+    @GetMapping("/logout")
+    public void loggingOut(HttpServletRequest request,
+                           HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+
+        if (null != session) {
+            session.invalidate();
+            request.getRequestDispatcher("login.jsp")
+                    .include(request, response);
+        }
+    }
+
+
 }

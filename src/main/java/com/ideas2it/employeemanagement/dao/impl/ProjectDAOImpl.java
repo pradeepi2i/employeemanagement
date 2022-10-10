@@ -31,21 +31,13 @@ import java.util.Map;
 @Repository
 public class ProjectDAOImpl implements ProjectDAO {
 
-
+    private Session session = null;
     @Autowired
     private SessionFactory sessionFactory;
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-    /*
-    private SessionFactory sessionFactory = HibernateConfiguration
-            .getInstance().getSessionFactory();
-
-    private Transaction transaction = null;
-
-     */
-    private Session session = null;
 
     /**
      * <p>

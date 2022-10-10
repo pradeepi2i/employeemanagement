@@ -4,7 +4,6 @@
 <%@ page language = "java" contentType = "text/html; charset = UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
 
-<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8"/>
@@ -12,13 +11,13 @@
 </head>
 <body>
 <p>CREATE EMPLOYEE</p>
-<form id="addEmployee" modelAttribute="employeeDTO" action = "employee/add" method = "post">
+<form modelAttribute="employeeDTO" action = "employee/add" method = "post">
       <table>
           <tr>
               <td>First Name:</td>
               <td><input type = "text" name="firstName" /></td>
           </tr>
-
+          <!-- <tr>
               <td>Last Name:</td>
               <td><input type = "text" name="lastName" /></td>
           </tr>
@@ -52,14 +51,11 @@
           </tr>
           <tr>
               <td>Previous Experience:</td>
-              <td><name:input type = "number" name="previousExperience" /></td>
+              <td><input type = "number" name="previousExperience" /></td>
           </tr>
           <tr>
-              <td>Monthly Income:</td>
-              <td><input type = "number" name="monthlyIncome" /></td>
-          </tr>
-          <tr>
-              <p>Contact Details</p>
+              <td>Salary:</td>
+              <td><input type = "number" name="salary" /></td>
           </tr>
           <tr>
               <td>Type:</td>
@@ -72,9 +68,6 @@
           <tr>
               <td>Phone Number:</td>
               <td><input type = "number" name="phoneNumber" /></td>
-          </tr>
-          <tr>
-              <p>Address Details</p>
           </tr>
           <tr>
               <td>Type:</td>
@@ -109,46 +102,13 @@
               <td><input type = "number" name="postalCode" /></td>
           </tr>
           <tr>
-              <p>Work Place Details</p>
-          </tr>
-          <tr>
               <td>Floor Number:</td>
               <td><input name="floorNumber" /></td>
-          </tr>
+          </tr>-->
           <tr>
-              <td><input type="submit" value="Create" name="operation"></td>
+              <td><input type="submit" value="Create" ></td>
           </tr>
       </table>
 </form>
-
-<!--form:form id="addEmployee" modelAttribute="employee" action = "employee/add" method = "post" >
-  First name : <input type = "text" name = "firstName"><br>
-  Last name : <input type = "text" name = "lastName"><br>
-  Gender : <input type = "text" name = "gender"><br>
-  Date of Birth : <input type = "date" name = "dateOfBirth"><br>
-  Date of Joining : <input type = "date" name = "dateOfJoining"><br>
-  Blood Group : <input type = "text" name = "bloodGroup"><br>
-  Account Number : <input type = "number" name = "accountNumber"><br>
-  IFSC code : <input type = "text" name = "ifscCode"><br>
-  Designation : <input type = "text" name = "designation"><br>
-  Previous Experience : <input type = "number" name = "previousExperience"><br>
-  Monthly Income : <input type = "text" name = "monthlyIncome"><br>
-  <p>Contact Details</p>
-  Type : <input type = "text" name = "type"><br>
-  Country code : <input type = "text" name = "countryCode"><br>
-  Phone number : <input type = "number" name = "phoneNumber"><br>
-  <p>Address Details</p>
-  Type : <input type = "text" name = "type"><br>
-  Door number : <input type = "text" name = "doorNumber"><br>
-  Street : <input type = "text" name = "streetName"><br>
-  City : <input type = "text" name = "cityName"><br>
-  District : <input type = "text" name = "districtName"><br>
-  State : <input type = "text" name = "stateName"><br>
-  Country : <input type = "text" name = "countryName"><br>
-  Postal code : <input type = "number" name = "postalCode"><br>
-  <p>Work Place Details</p>
-  Floor number : <input type = "number" name = "floorNumber"><br>
-  <input type="submit" value="Create" name="operation">
-</form-->
 </body>
 </html>

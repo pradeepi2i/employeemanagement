@@ -29,22 +29,25 @@ import java.util.List;
  *   @author : Pradeep
  * </p>
  */
-@Controller
+@RestController
+@RequestMapping("employee")
 public class EmployeeController {
 
-    private EmployeeService employeeServiceImpl;
+    private EmployeeService employeeService;
     private static Logger logger = LoggerConfiguration
             .getInstance("EmployeeController.class");
 
-    public EmployeeController(EmployeeService employeeServiceImpl) {
-        this.employeeServiceImpl = employeeServiceImpl;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
-    @GetMapping("/create")
+/*
+    @GetMapping("create")
     public ModelAndView addEmployee() {
-        ModelAndView modelAndView = new ModelAndView("create.jsp");
-        return modelAndView.addObject("employee", new EmployeeDTO());
+        ModelAndView modelAndView = new ModelAndView("create");
+        return modelAndView.addObject("employeeDTO", new EmployeeDTO());
     }
+*/
 
     /**
      * <p>
@@ -53,13 +56,14 @@ public class EmployeeController {
      *
      * @param employeeDTO employee details get from user
      */
-    @PostMapping("/employee/add")
-    public ModelAndView createEmployee(@ModelAttribute("employee") EmployeeDTO employeeDTO) {
-        String emailId = "";
+    @PostMapping("add")
+    public ModelAndView createEmployee(@ModelAttribute EmployeeDTO employeeDTO) {
+        logger.info(employeeDTO);
+        /*String emailId = "";
         boolean isValid = false;
 
         do {
-            List<String > emails = employeeServiceImpl.checkDuplicateEmail();
+            List<String > emails = employeeService.checkDuplicateEmail();
             String  email = EmployeeUtil.generateEmailByFirstNameAndLastName(
                     employeeDTO.getFirstName(), employeeDTO.getLastName());
 
@@ -73,13 +77,16 @@ public class EmployeeController {
                 logger.info("Email id already exists");
             }
         } while (!isValid);
-        employeeDTO.setEmailId(emailId);
-        int id = employeeServiceImpl.addEmployee(employeeDTO.getFirstName(), employeeDTO.getLastName(),
+        employeeDTO.setEmailId(emailId);*/
+        int id = employeeService.addEmployee(employeeDTO);
+
+        /*int id = employeeService.addEmployee(employeeDTO.getFirstName(), employeeDTO.getLastName(),
                 employeeDTO.getGender(), employeeDTO.getDateOfBirth(), employeeDTO.getBloodGroup(),
                 employeeDTO.getEmailId(), employeeDTO.getDateOfJoining(), employeeDTO.getAccountNumber(),
                 employeeDTO.getIfscCode(), employeeDTO.getDesignation(), employeeDTO.getPreviousExperience(),
                 employeeDTO.getSalary(), employeeDTO.getWorkPlace(), employeeDTO.getMobileNumbers(),
                 employeeDTO.getAddresses());
+*/
         logger.info("Employee created with Id " + id);
         return new ModelAndView("addEmployee").addObject("message", "Employee Created");
     }
@@ -91,10 +98,9 @@ public class EmployeeController {
      * </p>     
      *response.setContentType("text/html");
      */
-    @GetMapping("/employee/search")
-    @ResponseBody
+    @GetMapping("search")
     public ModelAndView searchEmployee(@RequestParam("id") int id) {
-        EmployeeDTO employeeDTO = employeeServiceImpl
+        EmployeeDTO employeeDTO = employeeService
                 .searchEmployeeById(id);
 
         if (null != employeeDTO) {
@@ -114,11 +120,10 @@ public class EmployeeController {
      *
      * @param id id to be updated
      */
-    @GetMapping("/employee/update")
-    @ResponseBody
+    @GetMapping("update")
     private ModelAndView updateDispatch(@RequestParam("id") int id) {
         if (0 != id) {
-            EmployeeDTO employeeDTO = employeeServiceImpl
+            EmployeeDTO employeeDTO = employeeService
                     .searchEmployeeById(id);
 
             if (null != employeeDTO) {
@@ -133,11 +138,10 @@ public class EmployeeController {
      *   Used to update address 
      * </p>
      */
-    @PostMapping("/employee/updateEmployee")
-    @ResponseBody
+    @PostMapping("updateEmployee")
     public ModelAndView updateEmployee(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO) {
         ModelAndView modelAndView = new ModelAndView();
-        int id = employeeServiceImpl.updateEmployee(employeeDTO);
+        int id = employeeService.updateEmployee(employeeDTO);
         logger.info("Employee id : " + id + " Updated ");
         return modelAndView.addObject("message", "Employee Updated");
     }
@@ -150,14 +154,13 @@ public class EmployeeController {
      * </p>
      *
      */
-    @GetMapping("/employee/delete")
-    @ResponseBody
+    @GetMapping("delete")
     public ModelAndView deleteEmployee(@RequestParam("id") int id) {
-        EmployeeDTO employeeDTO = employeeServiceImpl.searchEmployeeById(id);
+        EmployeeDTO employeeDTO = employeeService.searchEmployeeById(id);
 
         if (null != employeeDTO) {
 
-            if ( 0 != employeeServiceImpl.deleteEmployeeById(id)) {
+            if ( 0 != employeeService.deleteEmployeeById(id)) {
                 logger.info("Employee id : " + id + " deleted");
                 return new ModelAndView("/addEmployee").addObject("message", "Employee deleted");
             }

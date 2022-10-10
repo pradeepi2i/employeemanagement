@@ -6,6 +6,7 @@
 
 package com.ideas2it.employeemanagement.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ideas2it.employeemanagement.model.Address;
 import com.ideas2it.employeemanagement.model.Mobile;
 import com.ideas2it.employeemanagement.model.WorkPlace;
@@ -24,6 +25,7 @@ import java.util.Set;
  *   @author : Pradeep
  * </p>
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EmployeeDTO {
 
     protected static String companyName = "Ideas2IT";
@@ -46,13 +48,13 @@ public class EmployeeDTO {
     private Set<Address>addresses;
     private Set<ProjectDTO>projects;
 
-    public EmployeeDTO() {}
+    //public EmployeeDTO() {}
 
-    public EmployeeDTO(String firstName, String lastName,
-            String gender, LocalDate dateOfBirth, String bloodGroup, 
-            String emailId, LocalDate dateOfJoining, long accountNumber, 
+    /*public EmployeeDTO(String firstName, String lastName,
+            String gender, LocalDate dateOfBirth, String bloodGroup,
+            String emailId, LocalDate dateOfJoining, long accountNumber,
             String ifscCode, String designation, float previousExperience,
-            float salary, WorkPlace workPlace, Set<Mobile> mobileNumbers, 
+            float salary, WorkPlace workPlace, Set<Mobile> mobileNumbers,
             Set<Address>addresses) {
       
         this.firstName = firstName;
@@ -70,7 +72,7 @@ public class EmployeeDTO {
         this.workPlace = workPlace;
         this.mobileNumbers = mobileNumbers;
         this.addresses = addresses;
-    }
+    }*/
     
     // setters and getters
 
