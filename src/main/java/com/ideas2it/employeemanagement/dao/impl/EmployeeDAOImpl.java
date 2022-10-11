@@ -123,7 +123,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      * @return employee by searching id 
      * 
      */
-    @Transactional(rollbackFor = HibernateException.class, readOnly = true)
+    @Transactional(rollbackFor = HibernateException.class)
     public Employee retrieveEmployeeById(int id) {
         return sessionFactory.getCurrentSession().get(Employee.class, id);
 
@@ -155,7 +155,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      * @return updated id
      * 
      */
-    @Transactional(rollbackFor = HibernateException.class, readOnly = true)
+    @Transactional(rollbackFor = HibernateException.class)
     public Employee updateEmployee(Employee employee) {
         sessionFactory.getCurrentSession().update(employee);
 

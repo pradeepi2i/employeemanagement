@@ -81,7 +81,7 @@ public final class EmployeeUtil {
      */
     public static LocalDate convertToDate(String date) {
         DateTimeFormatter dateFormat = DateTimeFormatter
-                .ofPattern("dd-MM-yyyy");   
+                .ofPattern("yyyy-MM-dd");
         String[] dateArray = date.split("[-|//]");           
         String day = dateArray[0];
         String month = dateArray[1];

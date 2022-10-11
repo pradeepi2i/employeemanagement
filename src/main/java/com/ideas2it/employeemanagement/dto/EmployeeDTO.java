@@ -25,7 +25,7 @@ import java.util.Set;
  *   @author : Pradeep
  * </p>
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class EmployeeDTO {
 
     protected static String companyName = "Ideas2IT";
@@ -34,10 +34,10 @@ public class EmployeeDTO {
     private String firstName;
     private String lastName;
     private String gender;
-    private LocalDate dateOfBirth;
+    private String dateOfBirth;
     private String bloodGroup;
     private String emailId;
-    private LocalDate dateOfJoining;
+    private String dateOfJoining;
     private long accountNumber;
     private String ifscCode; 
     private String designation; 
@@ -47,34 +47,6 @@ public class EmployeeDTO {
     private Set<Mobile> mobileNumbers;
     private Set<Address>addresses;
     private Set<ProjectDTO>projects;
-
-    //public EmployeeDTO() {}
-
-    /*public EmployeeDTO(String firstName, String lastName,
-            String gender, LocalDate dateOfBirth, String bloodGroup,
-            String emailId, LocalDate dateOfJoining, long accountNumber,
-            String ifscCode, String designation, float previousExperience,
-            float salary, WorkPlace workPlace, Set<Mobile> mobileNumbers,
-            Set<Address>addresses) {
-      
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
-        this.bloodGroup = bloodGroup;
-        this.emailId = emailId;
-        this.dateOfJoining = dateOfJoining;
-        this.accountNumber = accountNumber;
-        this.ifscCode = ifscCode;
-        this.designation = designation;
-        this.previousExperience = previousExperience;
-        this.salary = salary;
-        this.workPlace = workPlace;
-        this.mobileNumbers = mobileNumbers;
-        this.addresses = addresses;
-    }*/
-    
-    // setters and getters
 
     public void setId(int id) {
         this.id = id;
@@ -108,11 +80,11 @@ public class EmployeeDTO {
         return this.gender;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public LocalDate getDateOfBirth() {
+    public String getDateOfBirth() {
         return this.dateOfBirth;
     }
 
@@ -132,11 +104,11 @@ public class EmployeeDTO {
         return this.emailId;
     }
 
-    public void setDateOfJoining(LocalDate dateOfJoining) {
+    public void setDateOfJoining(String dateOfJoining) {
         this.dateOfJoining = dateOfJoining;
     }
 
-    public LocalDate getDateOfJoining() {
+    public String getDateOfJoining() {
         return this.dateOfJoining;
     }
 
@@ -220,10 +192,11 @@ public class EmployeeDTO {
                 .append("<br>  Id : ").append(getId())
                 .append( "<br>  Name : ").append(getFirstName())
                 .append(" ").append(getLastName())
-                .append( "<br>  Age : ").append(EmployeeUtil.calculateAge(getDateOfBirth()))
+                .append( "<br>  Age : ").append(EmployeeUtil
+                        .calculateAge(EmployeeUtil.convertToDate(getDateOfBirth())))
                 .append("<br>  Designation : ").append(getDesignation())
                 .append( "<br>  Experience : ").append((getPreviousExperience() + EmployeeUtil
-                        .calculateExperience(getDateOfJoining())))
+                        .calculateExperience(EmployeeUtil.convertToDate(getDateOfJoining()))))
                 .append("<br>Bank Details <br>").append("<br>  Bank Name : ").append(bankName)
                 .append("<br>  Account Number : ").append(getAccountNumber())
                 .append("<br>  IFSC Code : ").append(getIfscCode()).toString();

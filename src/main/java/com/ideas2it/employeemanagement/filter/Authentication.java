@@ -38,10 +38,10 @@ public class Authentication {
             session.setAttribute("sessionName", userName);
 
             logger.info("Login servlet after set attribute");
-            request.getRequestDispatcher("index")
+            request.getRequestDispatcher("index.jsp")
                     .forward(request, response);
         } else {
-            request.getRequestDispatcher("login")
+            request.getRequestDispatcher("login.jsp")
                     .include(request, response);
         }
 

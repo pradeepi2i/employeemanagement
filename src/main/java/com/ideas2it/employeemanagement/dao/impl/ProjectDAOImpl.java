@@ -120,7 +120,7 @@ public class ProjectDAOImpl implements ProjectDAO {
      * @return project by searching id 
      * 
      */
-    @Transactional(rollbackFor = HibernateException.class, readOnly = true)
+    @Transactional(rollbackFor = HibernateException.class)
     public Project retrieveProjectById(int id) {
         return sessionFactory.getCurrentSession().get(Project.class, id);
         /*

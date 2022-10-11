@@ -10,7 +10,9 @@
     <title>Employee Management</title>
 </head>
 <body>
-Project ${projectDTO}
+
+${message} : ${id}
+
 
 </body>
 </html>

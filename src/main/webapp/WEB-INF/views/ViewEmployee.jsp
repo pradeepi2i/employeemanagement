@@ -10,7 +10,12 @@
     <title>Employee Management</title>
 </head>
 <body>
-Employee ${employeeDTO}
+${message} : ${id}
+${employeeDTO}
+${address}
+${mobiles}
+${projects}
+${work}
 
 </body>
 </html>

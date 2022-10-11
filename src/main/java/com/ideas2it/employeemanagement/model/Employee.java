@@ -7,6 +7,7 @@
 package com.ideas2it.employeemanagement.model;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -29,14 +30,16 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private int id;
     @Column(name = "company_name")
     protected static String companyName = "Ideas2IT";
     @Column(name = "bank_name")
     protected static String bankName = "HDFC";
     @Column(name = "previous_experience")
-    private float previousExperience;    
+    private float previousExperience;
+    @Column(name = "salary")
     private float salary;
     @Column(name = "account_number")
     private long accountNumber;
@@ -59,41 +62,14 @@ public class Employee {
     @OneToOne(targetEntity = WorkPlace.class)
     @JoinColumn(name = "work_id")
     private WorkPlace workPlace;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Set<Mobile> mobileNumbers;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Set<Address> addresses;
     @ManyToMany(mappedBy = "employees", fetch = FetchType.EAGER)
-    //@Cascade(SAVE_UPDATE)
     private Set<Project> projects;
-
-    //public Employee() {}
-
-    /*public Employee(String firstName, String lastName,
-            String gender, LocalDate dateOfBirth, String bloodGroup, 
-            String emailId, LocalDate dateOfJoining, long accountNumber, 
-            String ifscCode, String designation, float previousExperience,
-            float salary, WorkPlace workPlace, Set<Mobile> mobileNumbers, 
-            Set<Address>addresses) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
-        this.bloodGroup = bloodGroup;
-        this.emailId = emailId;
-        this.dateOfJoining = dateOfJoining;
-        this.accountNumber = accountNumber;
-        this.ifscCode = ifscCode;
-        this.designation = designation;
-        this.previousExperience = previousExperience;
-        this.salary = salary;
-        this.workPlace = workPlace;
-        this.mobileNumbers = mobileNumbers;
-        this.addresses = addresses;
-    }*/
 
     // setters and getters
 
@@ -106,19 +82,19 @@ public class Employee {
     }
 
     public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+        Employee.companyName = companyName;
     }   
 
     public String getCompanyName() {      
-        return this.companyName;
+        return companyName;
     }
 
     public void setBankName(String bankName) {
-        this.bankName = bankName;
+        Employee.bankName = bankName;
     }   
 
     public String getBankName() {      
-        return this.bankName;
+        return bankName;
     }
     
     public void setFirstName(String firstName) {

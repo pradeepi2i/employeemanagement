@@ -33,7 +33,6 @@ import java.util.Set;
  * </p>
  */
 @RestController
-@RequestMapping("management/project")
 public class ProjectController {
 
     private EmployeeService employeeService;
@@ -47,10 +46,15 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    @PostMapping("project")
+    public ModelAndView employeeDirect() {
+        return new ModelAndView("/project");
+    }
+
     //@PostMapping(value = "project/create")
-    @RequestMapping("/project/create")
+    @PostMapping("createProject")
     public ModelAndView addProject() {
-        return new ModelAndView("/createProject");
+        return new ModelAndView("/CreateProject").addObject("projectDTO", new ProjectDTO());
     }
 
     /**
@@ -65,7 +69,9 @@ public class ProjectController {
         int id = projectService.addProject(projectDTO.getName(), projectDTO.getDomain(),
                 projectDTO.getCost(), projectDTO.getDescription());
         logger.info("Project Id created " + id);
-        return new ModelAndView("/addProject").addObject("message", id);
+        return new ModelAndView("/Display")
+                .addObject("message", "Project Created with Id")
+                .addObject("id", id);
     }
 
     /**
@@ -82,11 +88,14 @@ public class ProjectController {
 
         if (null != projectDTO) {
             // return printProject(projectDTO);
-            return new ModelAndView("/searchProject").addObject("projectDTO", projectDTO);
+            return new ModelAndView("/ViewProject").addObject("projectDTO", projectDTO)
+                    .addObject("message", "Display Project Details ")
+                    .addObject("id", id);
         }
         logger.info("Project not found");
-        return new ModelAndView("/searchProject").addObject("error",
-                "Project not found");
+        return new ModelAndView("/Display").addObject("message",
+                "Project not found")
+                .addObject("id", id);
     }
 
 
@@ -99,7 +108,7 @@ public class ProjectController {
     @GetMapping("assign")
     public ModelAndView assignEmployee(@RequestParam("id") int id,
             @RequestParam("employeeId") int employeeId) {
-        ModelAndView modelAndView = new ModelAndView("/addProject");
+        ModelAndView modelAndView = new ModelAndView("/Assign");
 
         ProjectDTO projectDTO = projectService.searchProjectById(id);
         Set<EmployeeDTO> employees;
@@ -133,13 +142,16 @@ public class ProjectController {
                         .updateEmployee(employeeDTO);
                 logger.info("Project " + id + " assigned to Employee "
                         + employeeId);
-                return modelAndView.addObject("message", "Assigned Successfully");
+                return modelAndView.addObject("message", "Assigned Successfully").addObject("id", id)
+                        .addObject("employeeId", employeeId);
             }
             logger.info("No employee found");
-            return modelAndView.addObject("error", "Employee not found");
+            return modelAndView.addObject("message", "Employee not found")
+                    .addObject("employeeId", employeeId);
         }
         logger.info("Project not found");
-        return modelAndView.addObject("error", "Project not found");
+        return modelAndView.addObject("message", "Project not found")
+                .addObject("id", id);
     }
 
     /**
@@ -157,10 +169,12 @@ public class ProjectController {
                     .searchProjectById(id);
 
             if (null != projectDTO) {
-                return new ModelAndView("/modifyProject").addObject("projectDTO", projectDTO);
+                return new ModelAndView("/modifyProject")
+                        .addObject("projectDTO", projectDTO);
             }
         }
-        return new ModelAndView("/addProject").addObject("message", "Project not found");
+        return new ModelAndView("/Display").addObject("message", "Project not found")
+                .addObject("id", id);
     }
 
     /**
@@ -171,11 +185,12 @@ public class ProjectController {
      * </p> 
      *
      */
-    //@PostMapping(value = "updateProject")
+    @PostMapping(value = "updateProject")
     public ModelAndView updateProject(@ModelAttribute("projectDTO") ProjectDTO projectDTO) {
         int id = projectService.updateProject(projectDTO);
         logger.info("Project id : " + id + " Updated ");
-        return new ModelAndView("/addProject").addObject("message", "Project Updated");
+        return new ModelAndView("/Display").addObject("message", "Project Updated")
+                .addObject("id", id);
     }
  
     /**
@@ -189,17 +204,17 @@ public class ProjectController {
     @RequestMapping(value = "deleteProject")
     public ModelAndView deleteProject(@RequestParam("id") int id) {
         ProjectDTO projectDTO = projectService.searchProjectById(id);
-        ModelAndView modelAndView = new ModelAndView("/addProject");
+        ModelAndView modelAndView = new ModelAndView("/Display");
       
         if (null != projectDTO) {
 
             if (0 != projectService.deleteProjectById(id)) {
                 logger.info("Project id : " + id + " deleted");
-                return modelAndView.addObject("message", "Project deleted");
+                return modelAndView.addObject("message", "Project deleted").addObject("id", id);
             }
         }
-        return modelAndView.addObject("error",
-                "Project not found, Unable to delete");
+        return modelAndView.addObject("message",
+                "Project not found, Unable to delete").addObject("id", id);
     }
 
     /**

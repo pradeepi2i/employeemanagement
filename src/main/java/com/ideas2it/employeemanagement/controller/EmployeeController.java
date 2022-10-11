@@ -7,16 +7,24 @@
 package com.ideas2it.employeemanagement.controller;
 
 import com.ideas2it.employeemanagement.dto.EmployeeDTO;
+import com.ideas2it.employeemanagement.dto.ProjectDTO;
 import com.ideas2it.employeemanagement.logger.LoggerConfiguration;
+import com.ideas2it.employeemanagement.model.Address;
+import com.ideas2it.employeemanagement.model.Mobile;
 import com.ideas2it.employeemanagement.service.EmployeeService;
 import com.ideas2it.employeemanagement.util.EmployeeUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -30,7 +38,6 @@ import java.util.List;
  * </p>
  */
 @RestController
-@RequestMapping("employee")
 public class EmployeeController {
 
     private EmployeeService employeeService;
@@ -41,13 +48,17 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-/*
-    @GetMapping("create")
-    public ModelAndView addEmployee() {
-        ModelAndView modelAndView = new ModelAndView("create");
-        return modelAndView.addObject("employeeDTO", new EmployeeDTO());
+    @PostMapping("employee")
+    public ModelAndView employeeDirect() {
+        return new ModelAndView("/employee");
     }
-*/
+
+    @PostMapping("create")
+    public ModelAndView addEmployee() {
+        return new ModelAndView("/CreateEmployee")
+                .addObject("employeeDTO", new EmployeeDTO());
+    }
+
 
     /**
      * <p>
@@ -57,38 +68,14 @@ public class EmployeeController {
      * @param employeeDTO employee details get from user
      */
     @PostMapping("add")
-    public ModelAndView createEmployee(@ModelAttribute EmployeeDTO employeeDTO) {
+    public ModelAndView createEmployee(@ModelAttribute("employeeDTO")
+                                           EmployeeDTO employeeDTO) {
         logger.info(employeeDTO);
-        /*String emailId = "";
-        boolean isValid = false;
-
-        do {
-            List<String > emails = employeeService.checkDuplicateEmail();
-            String  email = EmployeeUtil.generateEmailByFirstNameAndLastName(
-                    employeeDTO.getFirstName(), employeeDTO.getLastName());
-
-            if (!emails.contains(email)) {
-                String lastName = employeeDTO.getLastName() + EmployeeUtil.generateRandomID();
-                EmployeeUtil.generateEmailByFirstNameAndLastName(
-                        employeeDTO.getFirstName(), lastName);
-                emailId = email;
-                isValid = true;
-            } else {
-                logger.info("Email id already exists");
-            }
-        } while (!isValid);
-        employeeDTO.setEmailId(emailId);*/
         int id = employeeService.addEmployee(employeeDTO);
-
-        /*int id = employeeService.addEmployee(employeeDTO.getFirstName(), employeeDTO.getLastName(),
-                employeeDTO.getGender(), employeeDTO.getDateOfBirth(), employeeDTO.getBloodGroup(),
-                employeeDTO.getEmailId(), employeeDTO.getDateOfJoining(), employeeDTO.getAccountNumber(),
-                employeeDTO.getIfscCode(), employeeDTO.getDesignation(), employeeDTO.getPreviousExperience(),
-                employeeDTO.getSalary(), employeeDTO.getWorkPlace(), employeeDTO.getMobileNumbers(),
-                employeeDTO.getAddresses());
-*/
         logger.info("Employee created with Id " + id);
-        return new ModelAndView("addEmployee").addObject("message", "Employee Created");
+        return new ModelAndView("Display")
+                .addObject("message", "Employee Created with Id")
+                .addObject("id", id);
     }
 
     /**
@@ -104,12 +91,11 @@ public class EmployeeController {
                 .searchEmployeeById(id);
 
         if (null != employeeDTO) {
-            return new ModelAndView("/searchEmployee").addObject("employeeDTO", employeeDTO);
-          //  return printEmployee(employeeDTO);
+            return printEmployee(employeeDTO);
         }
-        logger.info("Employee not found");
-        return new ModelAndView("/searchEmployee").addObject("error",
-                "Employee not found");
+        return new ModelAndView("/Display").addObject("message",
+                "Employee not found")
+                .addObject("id", id);
     }
 
     /**
@@ -127,10 +113,13 @@ public class EmployeeController {
                     .searchEmployeeById(id);
 
             if (null != employeeDTO) {
-                return new ModelAndView("/modify").addObject("employeeDTO", employeeDTO);
+                return new ModelAndView("/modifyEmployee")
+                        .addObject("employeeDTO", employeeDTO);
             }
         }
-        return new ModelAndView("/addEmployee").addObject("Employee not found");
+        return new ModelAndView("/Display")
+                .addObject("message", "Employee not found")
+                .addObject("id", id);
     }
 
     /**
@@ -139,11 +128,13 @@ public class EmployeeController {
      * </p>
      */
     @PostMapping("updateEmployee")
-    public ModelAndView updateEmployee(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO) {
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView updateEmployee(@ModelAttribute("employeeDTO")
+                                           EmployeeDTO employeeDTO) {
         int id = employeeService.updateEmployee(employeeDTO);
         logger.info("Employee id : " + id + " Updated ");
-        return modelAndView.addObject("message", "Employee Updated");
+        return new ModelAndView("/Display")
+                .addObject("message", "Employee Updated")
+                .addObject("id", id);
     }
 
     /**
@@ -162,10 +153,14 @@ public class EmployeeController {
 
             if ( 0 != employeeService.deleteEmployeeById(id)) {
                 logger.info("Employee id : " + id + " deleted");
-                return new ModelAndView("/addEmployee").addObject("message", "Employee deleted");
+                return new ModelAndView("/Display")
+                        .addObject("message", "Employee deleted")
+                        .addObject("id", id);
             }
         }
-        return new ModelAndView("/addEmployee").addObject("message", "Employee not found, Unable to delete");
+        return new ModelAndView("/Display")
+                .addObject("message", "Employee not found, Unable to delete")
+                .addObject("id", id);
     }
 
     /**
@@ -176,8 +171,30 @@ public class EmployeeController {
      * @param employeeDTO employee to be displayed
      */
     private ModelAndView printEmployee(EmployeeDTO employeeDTO) {
-        ModelAndView modelAndView = new ModelAndView("display");
-        return modelAndView.addObject("employee", employeeDTO);
+        ModelAndView modelAndView = new ModelAndView("ViewEmployee");
+        modelAndView.addObject("employeeDTO", employeeDTO)
+                .addObject("message", "Display Employee Details ")
+                .addObject("id", employeeDTO.getId());
+        if (null != employeeDTO.getMobileNumbers()) {
+            Set<Mobile> mobiles = employeeDTO.getMobileNumbers();
+            modelAndView.addObject("mobiles", mobiles);
+        }
+
+        if (null != employeeDTO.getAddresses()) {
+            modelAndView.addObject("address", employeeDTO.getAddresses());
+        }
+
+        if (null != employeeDTO.getWorkPlace()) {
+            modelAndView.addObject("work" + employeeDTO.getWorkPlace().getWorkPlaceId());
+        }
+
+        Set<ProjectDTO> projects = employeeDTO.getProjects();
+        if (null != projects && (!projects.isEmpty())) {
+            modelAndView.addObject("projects", projects);
+        } else {
+            modelAndView.addObject("message", "Doesn't worked on any projects");
+        }
+        return modelAndView;
 
     }
 }

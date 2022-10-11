@@ -22,7 +22,6 @@ public class Project {
     private String domain;
     private String description;
     @ManyToMany(fetch = FetchType.EAGER)
-    //@Cascade(SAVE_UPDATE)
     @JoinTable(name = "employee_project",
             joinColumns = {@JoinColumn(name = "project_id")},
             inverseJoinColumns = {@JoinColumn(name = "employee_id")})

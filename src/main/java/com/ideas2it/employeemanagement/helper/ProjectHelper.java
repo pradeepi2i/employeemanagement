@@ -10,6 +10,7 @@ import com.ideas2it.employeemanagement.dto.EmployeeDTO;
 import com.ideas2it.employeemanagement.dto.ProjectDTO;
 import com.ideas2it.employeemanagement.model.Employee;
 import com.ideas2it.employeemanagement.model.Project;
+import com.ideas2it.employeemanagement.util.EmployeeUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,6 +40,7 @@ public class ProjectHelper {
                 project.getName(), project.getDomain(),
                 project.getCost(), project.getDescription());        
         projectDTO.setId(project.getId());
+
         Set<EmployeeDTO> employeesDTO = new HashSet<>();
         Set<Employee> employees = project.getEmployees();
 
@@ -46,13 +48,14 @@ public class ProjectHelper {
 
             for (Employee employee : employees) {
                 EmployeeDTO employeeDTO = new EmployeeDTO();
+                employeeDTO.setId(employee.getId());
                 employeeDTO.setFirstName(employee.getFirstName());
                 employeeDTO.setLastName(employee.getLastName());
                 employeeDTO.setGender(employee.getGender());
-                employeeDTO.setDateOfBirth(employee.getDateOfBirth());
+                employeeDTO.setDateOfBirth(employee.getDateOfBirth().toString());
                 employeeDTO.setBloodGroup(employee.getBloodGroup());
                 employeeDTO.setEmailId(employee.getEmailId());
-                employeeDTO.setDateOfJoining(employee.getDateOfJoining());
+                employeeDTO.setDateOfJoining(employee.getDateOfJoining().toString());
                 employeeDTO.setAccountNumber(employee.getAccountNumber());
                 employeeDTO.setIfscCode(employee.getIfscCode());
                 employeeDTO.setDesignation(employee.getDesignation());
@@ -65,6 +68,8 @@ public class ProjectHelper {
             }
             projectDTO.setEmployees(employeesDTO);
         }
+
+
         return projectDTO;
     }
 
@@ -81,6 +86,7 @@ public class ProjectHelper {
                 projectDTO.getName(), projectDTO.getDomain(),
                 projectDTO.getCost(), projectDTO.getDescription());
         project.setId(projectDTO.getId());
+
         Set<Employee> employees = new HashSet<>();
         Set<EmployeeDTO> employeesDTO = projectDTO.getEmployees();
 
@@ -88,13 +94,14 @@ public class ProjectHelper {
 
             for (EmployeeDTO employeeDTO : employeesDTO) {
                 Employee employee = new Employee();
+                employee.setId(employeeDTO.getId());
                 employee.setFirstName(employeeDTO.getFirstName());
                 employee.setLastName(employeeDTO.getLastName());
                 employee.setGender(employeeDTO.getGender());
-                employee.setDateOfBirth(employeeDTO.getDateOfBirth());
+                employee.setDateOfBirth(EmployeeUtil.convertToDate(employeeDTO.getDateOfBirth()));
                 employee.setBloodGroup(employeeDTO.getBloodGroup());
                 employee.setEmailId(employeeDTO.getEmailId());
-                employee.setDateOfJoining(employeeDTO.getDateOfJoining());
+                employee.setDateOfJoining(EmployeeUtil.convertToDate(employeeDTO.getDateOfJoining()));
                 employee.setAccountNumber(employeeDTO.getAccountNumber());
                 employee.setIfscCode(employeeDTO.getIfscCode());
                 employee.setDesignation(employeeDTO.getDesignation());
@@ -107,6 +114,8 @@ public class ProjectHelper {
             }
             project.setEmployees(employees);
         }
+
+
         return project;
     }
 }

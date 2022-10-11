@@ -10,26 +10,25 @@
 </head>
 <body>
 
-<!--form action = "employee/create" >
-    <input type="submit" value="Add Employee" name = "operation">
-</form--><br>
-<button><a href="create.jsp" style="text-decoration:none">Add Employee</a></button>
+<form action = "create" method="post">
+    <input type="submit" value="Add Employee">
+</form><br>
 
 <p>SEARCH EMPLOYEE</p>
-<form action = "employee/search" method="get" >
+<form action = "search" method="get" >
     Employee Id: <input type = "number" name = "id"><br>
-    <input type="submit" value="Fetch" name = "operation">
+    <input type="submit" value="Fetch">
 </form><br>
 
  <p> UPDATE EMPLOYEE</p>
-    <form action = "employee/update" method="get">
+    <form action = "update" method="get">
         Employee Id: <input type = "number" name = "id"><br>
             <input type="submit" value="Update" name = "operation">
     </form><br>
 
 
 <p>DELETE EMPLOYEE</p>
-<form action = "employee/delete" method="get">
+<form action = "delete" method="get">
     Employee Id: <input type = "number" name = "id"><br>
     <input type="submit" value="Delete" name = "operation">
 </form><br>

@@ -11,7 +11,7 @@
 <body>
 
 <p>CREATE PROJECT</p>
-<form modelAttribute = "projectDTO" action = "management/project/addProject" method = "post">
+<form modelAttribute = "projectDTO" action = "addProject" method = "post">
     <table>
         <tr>
             <td>Project Name:</td>

@@ -11,10 +11,15 @@
 </head>
 <body>
 
-<button><a href="createProject.jsp" style="text-decoration:none">Add Project</a></button>
+
+<br>
+<form action = "createProject" method = "post">
+<input type = "submit" value = "AddProject">
+</form> <br>
+
 
 <p>SEARCH PROJECT</p>
-<form action = "management/project/searchProject" method = "get">
+<form action = "searchProject" method = "get">
     <table>
         <tr>
             <td>Project Id:</td>
@@ -32,7 +37,7 @@
 
 
  <p> UPDATE PROJECT</p>
-    <form action = "management/project/modifyProject"  method = "get">
+    <form action = "modifyProject"  method = "get">
         <table>
                 <tr>
                     <td>Project Id:</td>
@@ -49,14 +54,14 @@
     </form><br>
 
 <p> ASSIGN EMPLOYEE PROJECT</p>
-    <form action = "management/project/assign"  method = "get">
+    <form action = "assign"  method = "get">
         Project Id: <input type = "number" name = "id"><br>
         Employee Id: <input type = "number" name = "employeeId"><br>
             <input type="submit" value="Assign" name = "operation">
     </form><br>
 
 <p>DELETE PROJECT</p>
-<form action = "management/project/deleteProject"  method = "get">
+<form action = "deleteProject"  method = "get">
   Project Id: <input type = "number" name = "id"><br>
   <input type="submit" value="Delete" name = "operation">
 </form>

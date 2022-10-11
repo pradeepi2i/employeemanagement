@@ -16,12 +16,11 @@
 
     <p>UPDATE PROJECT</p>
     <form modelAttribute = "projectDTO" action = "updateProject" method = "post">
-
-        Project Id : <input type = "number" name = "id"><br>
-        Project name : <input type = "text" name = "name"><br>
-        Domain : <input type = "text"  name = "domain"><br>
-        Cost : <input type = "number" name = "cost"><br>
-        Description : <input type = "text" name = "description"><br>
+        <input type = "hidden" value= "${projectDTO.id}" name = "id"><br>
+        Project name : <input type = "text"  value= "${projectDTO.name}" name = "name"><br>
+        Domain : <input type = "text"  value= "${projectDTO.domain}" name = "domain"><br>
+        Cost : <input type = "number" value= "${projectDTO.cost}" name = "cost"><br>
+        Description : <input type = "text" value= "${projectDTO.description}" name = "description"><br>
         <input type="submit" value="UpdateProject">
     </form>
 </div>

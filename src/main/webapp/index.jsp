@@ -1,4 +1,4 @@
-<jsp:include page="logout.jsp" />
+<!--jsp:include page="logout.jsp" /-->
 
 <%@ page language = "java" contentType = "text/html; charset = UTF-8"
     pageEncoding="UTF-8" %>
@@ -11,19 +11,16 @@
 </head>
 <body>
 
-<!--form action = "employee">
-<input type = "submit" value = "Employee Management" name = "operation">
-</form-->
+<br>
+<form action = "employee" method = "post">
+<input type = "submit" value = "Employee Management">
+</form> <br>
 
-<button><a href="employee.jsp" style="text-decoration:none">Employee Management</a></button>
+<br>
+<form action = "project" method = "post">
+<input type = "submit" value = "Project Management">
+</form> <br>
 
-<button><a href="project.jsp" style="text-decoration:none">Project Management</a></button>
 
-<!--button onclick="window.location.href = 'employee.jsp';">
-    Employee Management
-</button>
-<button onclick="window.location.href = 'project.jsp';">
-    Project Management
-</button-->
 </body>
 </html>
