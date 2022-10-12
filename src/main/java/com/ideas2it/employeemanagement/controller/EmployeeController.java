@@ -23,6 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -55,8 +57,37 @@ public class EmployeeController {
 
     @PostMapping("create")
     public ModelAndView addEmployee() {
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        List<Mobile> mobiles = new ArrayList<Mobile>();
+        mobiles.add(getMobile());
+        employeeDTO.setMobileNumbers(mobiles);
+        Set<Address> addresses = new HashSet<Address>();
+        addresses.add(getAddress());
+        employeeDTO.setAddresses(addresses);
+        addresses.add(getAddress());
         return new ModelAndView("/CreateEmployee")
-                .addObject("employeeDTO", new EmployeeDTO());
+                .addObject("employeeDTO", employeeDTO);
+    }
+
+    private Mobile getMobile() {
+        Mobile mobile = new Mobile();
+        mobile.setType("Office");
+        mobile.setCountryCode("+");
+        mobile.setMobileNumber(1234567890);
+        return mobile;
+    }
+
+    private Address getAddress() {
+        Address address = new Address();
+        address.setType("Current");
+        address.setDoorNumber("12");
+        address.setStreetName("street");
+        address.setCityName("city");
+        address.setDistrictName("district");
+        address.setStateName("state");
+        address.setCountryName("country");
+        address.setPostalCode(123123);
+        return address;
     }
 
 
@@ -71,6 +102,7 @@ public class EmployeeController {
     public ModelAndView createEmployee(@ModelAttribute("employeeDTO")
                                            EmployeeDTO employeeDTO) {
         logger.info(employeeDTO);
+        logger.info(employeeDTO.getMobileNumbers());
         int id = employeeService.addEmployee(employeeDTO);
         logger.info("Employee created with Id " + id);
         return new ModelAndView("Display")
@@ -86,16 +118,18 @@ public class EmployeeController {
      *response.setContentType("text/html");
      */
     @GetMapping("search")
-    public ModelAndView searchEmployee(@RequestParam("id") int id) {
+    public EmployeeDTO searchEmployee(@RequestParam("id") int id) {
         EmployeeDTO employeeDTO = employeeService
                 .searchEmployeeById(id);
 
         if (null != employeeDTO) {
-            return printEmployee(employeeDTO);
+            //return printEmployee(employeeDTO);
+            return employeeDTO;
         }
-        return new ModelAndView("/Display").addObject("message",
-                "Employee not found")
-                .addObject("id", id);
+        //return new ModelAndView("/Display").addObject("message",
+          //      "Employee not found")
+            //    .addObject("id", id);
+        return null;
     }
 
     /**
@@ -176,7 +210,7 @@ public class EmployeeController {
                 .addObject("message", "Display Employee Details ")
                 .addObject("id", employeeDTO.getId());
         if (null != employeeDTO.getMobileNumbers()) {
-            Set<Mobile> mobiles = employeeDTO.getMobileNumbers();
+            List<Mobile> mobiles = employeeDTO.getMobileNumbers();
             modelAndView.addObject("mobiles", mobiles);
         }
 
@@ -185,7 +219,7 @@ public class EmployeeController {
         }
 
         if (null != employeeDTO.getWorkPlace()) {
-            modelAndView.addObject("work" + employeeDTO.getWorkPlace().getWorkPlaceId());
+            modelAndView.addObject("work", employeeDTO.getWorkPlace().getWorkPlaceId());
         }
 
         Set<ProjectDTO> projects = employeeDTO.getProjects();
@@ -195,7 +229,6 @@ public class EmployeeController {
             modelAndView.addObject("message", "Doesn't worked on any projects");
         }
         return modelAndView;
-
     }
 }
 

@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
@@ -59,12 +60,12 @@ public class Employee {
     @Column(name = "ifsc_code")
     private String ifscCode; 
     private String designation;
-    @OneToOne(targetEntity = WorkPlace.class)
+    @OneToOne(targetEntity = WorkPlace.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "work_id")
     private WorkPlace workPlace;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
-    private Set<Mobile> mobileNumbers;
+    private List<Mobile> mobileNumbers;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Set<Address> addresses;
@@ -201,11 +202,11 @@ public class Employee {
         return this.workPlace;
     }
 
-    public void setMobileNumbers(Set<Mobile> mobileNumbers) {
+    public void setMobileNumbers(List<Mobile> mobileNumbers) {
         this.mobileNumbers = mobileNumbers;
     }
 
-    public Set<Mobile> getMobileNumbers() {
+    public List<Mobile> getMobileNumbers() {
         return this.mobileNumbers;
     }
 

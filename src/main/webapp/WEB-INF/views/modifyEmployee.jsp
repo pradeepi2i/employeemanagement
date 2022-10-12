@@ -28,6 +28,21 @@
     Previous Experience : <input type = "number" value = "${employeeDTO.previousExperience}" name = "previousExperience"><br>
     Salary : <input type = "text" value = "${employeeDTO.salary}" name = "salary"><br>
 
+    <c:forEach items="${employeeDTO.mobileNumbers}" var="mobileNumber" varStatus="status">
+                    <tr>
+                        <td>Type:</td>
+                        <td><input type = "text" name="mobileNumbers.type" value="${mobileNumber.type}"/></td>
+                    </tr>
+                    <tr>
+                        <td>Country Code:</td>
+                        <td><input type = "text" name="mobileNumbers.countryCode" value="${mobileNumber.countryCode}"/></td>
+                    </tr>
+                        <tr>
+                            <td>Phone Number:</td>
+                            <td><input type = "number" name="mobileNumbers.phoneNumber" value="${mobileNumber.mobileNumber}" /></td>
+                    </tr>
+    </c:forEach>
+
 
     <input type="submit" value="UpdateEmployee">
 </form>

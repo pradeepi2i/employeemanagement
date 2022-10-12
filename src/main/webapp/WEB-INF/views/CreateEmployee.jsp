@@ -1,6 +1,7 @@
 <jsp:include page="logout.jsp" />
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language = "java" contentType = "text/html; charset = UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
 
@@ -61,18 +62,38 @@
               <td>Salary:</td>
               <td><input type = "number" name="salary" /></td>
           </tr>
-          <tr>
-              <td>Type:</td>
-              <td><input type = "text" name="type" /></td>
-          </tr>
-          <tr>
-              <td>Country Code:</td>
-              <td><input type = "text" name="countryCode" /></td>
-          </tr>
-          <tr>
-              <td>Phone Number:</td>
-              <td><input type = "number" name="phoneNumber" /></td>
-          </tr>
+
+
+
+                <!--tr>
+                    <td>Type:</td>
+                    <td><input type = "text" name="mobile.type" /></td>
+                </tr>
+                <tr>
+                    <td>Country Code:</td>
+                    <td><input type = "text" name="mobile.countryCode" /></td>
+                </tr>
+                    <tr>
+                        <td>Phone Number:</td>
+                        <td><input type = "number" name="mobile.mobileNumber" /></td>
+                </tr-->
+
+          <c:forEach items="${employeeDTO.mobileNumbers}" var="mobile" varStatus="status">
+
+              <tr>
+                  <td>Type</td>
+                  <td><input name="mobileNumbers.[${status.index}].type" placeholder="${mobile.type}" /></td>
+              </tr>
+
+              <tr>
+                  <td>Country Code</td>
+                  <td><input name="mobileNumbers.[${status.index}].countryCode" placeholder="${mobile.countryCode}" /></td>
+              </tr>
+              <tr>
+                  <td>Mobile Number</td>
+                  <td><input name="mobileNumbers.[${status.index}].mobileNumber" placeholder="${mobile.mobileNumber}" /></td>
+              </tr>
+         </c:forEach>
           <tr>
               <td>Type:</td>
               <td><input type = "text" name="type" /></td>
@@ -105,14 +126,18 @@
               <td>Postal Code:</td>
               <td><input type = "number" name="postalCode" /></td>
           </tr>
+
+
           <tr>
               <td>Floor Number:</td>
-              <td><input name="floorNumber" /></td>
+              <td><input name="workPlace.floorNumber" /></td>
           </tr>
           <tr>
               <td><input type="submit" value="Create" ></td>
           </tr>
       </table>
 </form>
+
+
 </body>
 </html>

@@ -11,10 +11,10 @@
 </head>
 <body>
 ${message} : ${id}
-${employeeDTO}
-${address}
-${mobiles}
-${projects}
+${employeeDTO}<br>
+${address}<br>
+${mobiles}<br>
+${projects}<br>
 ${work}
 
 </body>

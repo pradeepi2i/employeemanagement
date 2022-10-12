@@ -6,6 +6,8 @@
 
 package com.ideas2it.employeemanagement.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 /**
@@ -23,7 +25,8 @@ import javax.persistence.*;
 public class WorkPlace {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "id")
     private int workPlaceId;
     @Column(name = "floor_number")

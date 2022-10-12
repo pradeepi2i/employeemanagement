@@ -13,6 +13,7 @@ import com.ideas2it.employeemanagement.model.WorkPlace;
 import com.ideas2it.employeemanagement.util.EmployeeUtil;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -44,7 +45,7 @@ public class EmployeeDTO {
     private float previousExperience;    
     private float salary; 
     private WorkPlace workPlace;  
-    private Set<Mobile> mobileNumbers;
+    private List<Mobile> mobileNumbers;
     private Set<Address>addresses;
     private Set<ProjectDTO>projects;
 
@@ -160,11 +161,11 @@ public class EmployeeDTO {
         return this.workPlace;
     }
 
-    public void setMobileNumbers(Set<Mobile> mobileNumbers) {
+    public void setMobileNumbers(List<Mobile> mobileNumbers) {
         this.mobileNumbers  = mobileNumbers;
     }
 
-    public Set<Mobile> getMobileNumbers() {
+    public List<Mobile> getMobileNumbers() {
         return this.mobileNumbers;
     }
 

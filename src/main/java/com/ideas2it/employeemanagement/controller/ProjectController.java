@@ -47,7 +47,7 @@ public class ProjectController {
     }
 
     @PostMapping("project")
-    public ModelAndView employeeDirect() {
+    public ModelAndView projectDirect() {
         return new ModelAndView("/project");
     }
 
@@ -128,13 +128,13 @@ public class ProjectController {
                     employees.add(employeeDTO);
                 }
 
-                /*if (null != employeeDTO.getProjects()) {
+                if (null != employeeDTO.getProjects()) {
                     projects = employeeDTO.getProjects();
                     projects.add(projectDTO);
                 } else {
                     projects = new HashSet<>();
                     projects.add(projectDTO);
-                }*/
+                }
                 projectDTO.setEmployees(employees);
                 //employeeDTO.setProjects(projects);
                 id = projectService.updateProject(projectDTO);
