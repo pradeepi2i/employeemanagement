@@ -25,8 +25,8 @@ public class Authentication {
 
     private static final Logger logger = LoggerConfiguration
             .getInstance("LoginServlet.class");
-    @GetMapping("/login")
-    public void userLogin(HttpServletRequest request,
+   // @GetMapping("/login")
+    /*public void userLogin(HttpServletRequest request,
                           HttpServletResponse response) throws IOException, ServletException {
 
         String userName = request.getParameter("userName");
@@ -45,9 +45,9 @@ public class Authentication {
                     .include(request, response);
         }
 
-    }
+    }*/
 
-    @GetMapping("/logout")
+    /*@GetMapping("/logout")
     public void loggingOut(HttpServletRequest request,
                            HttpServletResponse response)
             throws ServletException, IOException {
@@ -59,6 +59,6 @@ public class Authentication {
                     .include(request, response);
         }
     }
-
+*/
 
 }

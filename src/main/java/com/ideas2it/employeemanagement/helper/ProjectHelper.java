@@ -52,10 +52,8 @@ public class ProjectHelper {
                 employeeDTO.setFirstName(employee.getFirstName());
                 employeeDTO.setLastName(employee.getLastName());
                 employeeDTO.setGender(employee.getGender());
-                employeeDTO.setDateOfBirth(employee.getDateOfBirth().toString());
                 employeeDTO.setBloodGroup(employee.getBloodGroup());
                 employeeDTO.setEmailId(employee.getEmailId());
-                employeeDTO.setDateOfJoining(employee.getDateOfJoining().toString());
                 employeeDTO.setAccountNumber(employee.getAccountNumber());
                 employeeDTO.setIfscCode(employee.getIfscCode());
                 employeeDTO.setDesignation(employee.getDesignation());
@@ -68,8 +66,6 @@ public class ProjectHelper {
             }
             projectDTO.setEmployees(employeesDTO);
         }
-
-
         return projectDTO;
     }
 
@@ -98,10 +94,8 @@ public class ProjectHelper {
                 employee.setFirstName(employeeDTO.getFirstName());
                 employee.setLastName(employeeDTO.getLastName());
                 employee.setGender(employeeDTO.getGender());
-                employee.setDateOfBirth(EmployeeUtil.convertToDate(employeeDTO.getDateOfBirth()));
                 employee.setBloodGroup(employeeDTO.getBloodGroup());
                 employee.setEmailId(employeeDTO.getEmailId());
-                employee.setDateOfJoining(EmployeeUtil.convertToDate(employeeDTO.getDateOfJoining()));
                 employee.setAccountNumber(employeeDTO.getAccountNumber());
                 employee.setIfscCode(employeeDTO.getIfscCode());
                 employee.setDesignation(employeeDTO.getDesignation());

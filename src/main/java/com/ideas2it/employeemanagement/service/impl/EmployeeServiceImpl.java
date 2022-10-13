@@ -6,8 +6,10 @@
 
 package com.ideas2it.employeemanagement.service.impl;
 
+import com.ideas2it.employeemanagement.configuration.EmployeeDetails;
 import com.ideas2it.employeemanagement.dao.EmployeeDAO;
 import com.ideas2it.employeemanagement.dto.EmployeeDTO;
+import com.ideas2it.employeemanagement.exception.EmployeeException;
 import com.ideas2it.employeemanagement.helper.EmployeeHelper;
 import com.ideas2it.employeemanagement.model.Address;
 import com.ideas2it.employeemanagement.model.Employee;
@@ -15,6 +17,9 @@ import com.ideas2it.employeemanagement.model.Mobile;
 import com.ideas2it.employeemanagement.model.WorkPlace;
 import com.ideas2it.employeemanagement.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,7 +40,7 @@ import java.util.stream.Collectors;
  * </p>
  */
 @Service
-public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService, UserDetailsService {
 
     private EmployeeDAO employeeDAO;
 
@@ -149,4 +154,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<String> checkDuplicateEmail() {
         return employeeDAO.checkDuplicateEmail();
     }
-} 
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Employee employee = employeeDAO.retrieveEmployeeById(Integer.parseInt(username));
+        if (null == employee) {
+            throw new EmployeeException("User not found", new UsernameNotFoundException("error"));
+        }
+        return new EmployeeDetails(EmployeeHelper.convertEmployeeIntoEmployeeDTO(employee));
+    }
+}

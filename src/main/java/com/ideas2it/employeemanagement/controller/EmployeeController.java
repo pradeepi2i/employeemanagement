@@ -57,39 +57,11 @@ public class EmployeeController {
 
     @PostMapping("create")
     public ModelAndView addEmployee() {
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        List<Mobile> mobiles = new ArrayList<Mobile>();
-        mobiles.add(getMobile());
-        employeeDTO.setMobileNumbers(mobiles);
-        Set<Address> addresses = new HashSet<Address>();
-        addresses.add(getAddress());
-        employeeDTO.setAddresses(addresses);
-        addresses.add(getAddress());
         return new ModelAndView("/CreateEmployee")
-                .addObject("employeeDTO", employeeDTO);
+                .addObject("employeeDTO", new EmployeeDTO())
+                .addObject("employeeDTO", new Mobile())
+                .addObject("employeeDTO", new Address());
     }
-
-    private Mobile getMobile() {
-        Mobile mobile = new Mobile();
-        mobile.setType("Office");
-        mobile.setCountryCode("+");
-        mobile.setMobileNumber(1234567890);
-        return mobile;
-    }
-
-    private Address getAddress() {
-        Address address = new Address();
-        address.setType("Current");
-        address.setDoorNumber("12");
-        address.setStreetName("street");
-        address.setCityName("city");
-        address.setDistrictName("district");
-        address.setStateName("state");
-        address.setCountryName("country");
-        address.setPostalCode(123123);
-        return address;
-    }
-
 
     /**
      * <p>
@@ -100,9 +72,13 @@ public class EmployeeController {
      */
     @PostMapping("add")
     public ModelAndView createEmployee(@ModelAttribute("employeeDTO")
-                                           EmployeeDTO employeeDTO) {
-        logger.info(employeeDTO);
-        logger.info(employeeDTO.getMobileNumbers());
+            EmployeeDTO employeeDTO, Mobile mobile, Address address) {
+        List<Mobile> mobiles = new ArrayList<>();
+        Set<Address> addresses = new HashSet<>();
+        mobiles.add(mobile);
+        addresses.add(address);
+        employeeDTO.setMobileNumbers(mobiles);
+        employeeDTO.setAddresses(addresses);
         int id = employeeService.addEmployee(employeeDTO);
         logger.info("Employee created with Id " + id);
         return new ModelAndView("Display")
@@ -118,18 +94,17 @@ public class EmployeeController {
      *response.setContentType("text/html");
      */
     @GetMapping("search")
-    public EmployeeDTO searchEmployee(@RequestParam("id") int id) {
+    public ModelAndView searchEmployee(@RequestParam("id") int id) {
         EmployeeDTO employeeDTO = employeeService
                 .searchEmployeeById(id);
 
         if (null != employeeDTO) {
-            //return printEmployee(employeeDTO);
-            return employeeDTO;
+            return printEmployee(employeeDTO);
+
         }
-        //return new ModelAndView("/Display").addObject("message",
-          //      "Employee not found")
-            //    .addObject("id", id);
-        return null;
+        return new ModelAndView("/Display").addObject("message",
+                "Employee not found")
+                .addObject("id", id);
     }
 
     /**

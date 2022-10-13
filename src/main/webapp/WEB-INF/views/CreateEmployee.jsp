@@ -65,38 +65,23 @@
 
 
 
-                <!--tr>
+                <tr>
                     <td>Type:</td>
-                    <td><input type = "text" name="mobile.type" /></td>
+                    <td><input type = "text" name="type" /></td>
                 </tr>
                 <tr>
                     <td>Country Code:</td>
-                    <td><input type = "text" name="mobile.countryCode" /></td>
+                    <td><input type = "text" name="countryCode" /></td>
                 </tr>
                     <tr>
                         <td>Phone Number:</td>
-                        <td><input type = "number" name="mobile.mobileNumber" /></td>
-                </tr-->
+                        <td><input type = "number" name="mobileNumber" /></td>
+                </tr>
 
-          <c:forEach items="${employeeDTO.mobileNumbers}" var="mobile" varStatus="status">
 
-              <tr>
-                  <td>Type</td>
-                  <td><input name="mobileNumbers.[${status.index}].type" placeholder="${mobile.type}" /></td>
-              </tr>
-
-              <tr>
-                  <td>Country Code</td>
-                  <td><input name="mobileNumbers.[${status.index}].countryCode" placeholder="${mobile.countryCode}" /></td>
-              </tr>
-              <tr>
-                  <td>Mobile Number</td>
-                  <td><input name="mobileNumbers.[${status.index}].mobileNumber" placeholder="${mobile.mobileNumber}" /></td>
-              </tr>
-         </c:forEach>
           <tr>
               <td>Type:</td>
-              <td><input type = "text" name="type" /></td>
+              <td><input type = "text" name="addressType" /></td>
           </tr>
           <tr>
               <td>Door Number:</td>
@@ -131,6 +116,7 @@
           <tr>
               <td>Floor Number:</td>
               <td><input name="workPlace.floorNumber" /></td>
+
           </tr>
           <tr>
               <td><input type="submit" value="Create" ></td>

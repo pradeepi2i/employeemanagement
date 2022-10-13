@@ -6,6 +6,8 @@
 
 package com.ideas2it.employeemanagement.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 /**
@@ -24,7 +26,8 @@ import javax.persistence.*;
 public class Address {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private int id;
     @Column(name = "postal_code")
     private int postalCode;
@@ -34,7 +37,8 @@ public class Address {
     private String streetName;
     @Column(name = "city_name")
     private String cityName;
-    private String type;
+    @Column(name = "type")
+    private String addressType;
     @Column(name = "district_name")
     private String districtName;
     @Column(name = "state_name")
@@ -76,12 +80,12 @@ public class Address {
         return this.cityName;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setAddressType(String addressType) {
+        this.addressType = addressType;
     }
 
-    public String getType() {
-        return this.type;
+    public String getAddressType() {
+        return this.addressType;
     }
 
     public void setDistrictName(String districtName) {
@@ -118,7 +122,7 @@ public class Address {
 
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        return stringBuilder.append("<br>  ").append(getType())
+        return stringBuilder.append("<br>  ").append(getAddressType())
                 .append(" Address : ").append("<br>  ").append(getDoorNumber())
                 .append(", ").append(getStreetName()).append(", ")
                 .append(getCityName()).append(", <br>").append(getDistrictName())

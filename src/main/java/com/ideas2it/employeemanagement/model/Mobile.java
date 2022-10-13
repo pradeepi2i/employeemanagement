@@ -6,6 +6,8 @@
 
 package com.ideas2it.employeemanagement.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 /**
@@ -24,7 +26,8 @@ import javax.persistence.*;
 public class Mobile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private int id;
     @Column(name = "mobile_number")
     private long mobileNumber;

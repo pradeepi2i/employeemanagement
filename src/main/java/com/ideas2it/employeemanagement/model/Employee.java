@@ -66,7 +66,7 @@ public class Employee {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     private List<Mobile> mobileNumbers;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     private Set<Address> addresses;
     @ManyToMany(mappedBy = "employees", fetch = FetchType.EAGER)
