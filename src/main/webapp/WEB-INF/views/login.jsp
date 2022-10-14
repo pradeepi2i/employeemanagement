@@ -9,7 +9,7 @@
 <body>
 ${SPRING_SECURITY_LAST_EXCEPTION.message}
 <form action = "login" method = "post">
-  User Name : <input type = "text" name = "userName"><br>
+  User Id : <input type = "number" name = "userId"><br>
   Password : <input type = "text" name = "password"><br>
   <input type="submit" value="Login">
 </form>

@@ -11,21 +11,23 @@ import com.ideas2it.employeemanagement.dao.EmployeeDAO;
 import com.ideas2it.employeemanagement.dto.EmployeeDTO;
 import com.ideas2it.employeemanagement.exception.EmployeeException;
 import com.ideas2it.employeemanagement.helper.EmployeeHelper;
+import com.ideas2it.employeemanagement.logger.LoggerConfiguration;
 import com.ideas2it.employeemanagement.model.Address;
 import com.ideas2it.employeemanagement.model.Employee;
 import com.ideas2it.employeemanagement.model.Mobile;
 import com.ideas2it.employeemanagement.model.WorkPlace;
 import com.ideas2it.employeemanagement.service.EmployeeService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +43,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class EmployeeServiceImpl implements EmployeeService, UserDetailsService {
+
+    private static Logger logger = LoggerConfiguration
+            .getInstance("AuthenticationSecurityConfiguration.class");
 
     private EmployeeDAO employeeDAO;
 
@@ -156,11 +161,15 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Employee employee = employeeDAO.retrieveEmployeeById(Integer.parseInt(username));
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        logger.info("loadUserByName method() in service");
+        Employee employee = employeeDAO.retrieveEmployeeById(Integer.parseInt(id));
         if (null == employee) {
-            throw new EmployeeException("User not found", new UsernameNotFoundException("error"));
+            throw new UsernameNotFoundException("User with user id" + id + " not found");
         }
-        return new EmployeeDetails(EmployeeHelper.convertEmployeeIntoEmployeeDTO(employee));
+        //return new EmployeeDetails(EmployeeHelper.convertEmployeeIntoEmployeeDTO(employee));
+
+        logger.info("In service loadUserByName() " + employee.getFirstName());
+        return new User(id, employee.getFirstName(), new ArrayList<>());
     }
 }
