@@ -6,14 +6,14 @@
 
 package com.ideas2it.employeemanagement.service.impl;
 
-import com.ideas2it.employeemanagement.dao.ProjectDAO;
+import com.ideas2it.employeemanagement.repository.ProjectDAO;
 import com.ideas2it.employeemanagement.dto.ProjectDTO;
 import com.ideas2it.employeemanagement.helper.ProjectHelper;
 import com.ideas2it.employeemanagement.model.Project;
 import com.ideas2it.employeemanagement.service.ProjectService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -52,14 +52,10 @@ public class ProjectServiceImpl implements ProjectService {
             String description) {
         ProjectDTO projectDTO = new ProjectDTO(projectName, domain,
                 cost, description);  
-        Project project = projectDAO.insertProject(ProjectHelper
+        Project project = projectDAO.save(ProjectHelper
                                   .convertProjectDTOIntoProject(
                                   projectDTO));
-
-        if (null != project) {
-            return project.getId();
-        }
-        return 0;
+        return project.getId();
     }
 
     /**
@@ -70,8 +66,13 @@ public class ProjectServiceImpl implements ProjectService {
      * @return all projects
      */
     public Map<Integer, ProjectDTO> displayAllProjects() {
-        return projectDAO.retrieveAllProjects().entrySet().stream()
-                .collect(Collectors.toMap(project -> project.getKey(),
+        Map<Integer,Project> projects = new HashMap<>();
+
+        for (Project project : projectDAO.findAll()) {
+            projects.put(project.getId(), project);
+        }
+        return projects.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
                 project -> ProjectHelper
                 .convertProjectIntoProjectDTO(project.getValue())));
     }
@@ -87,7 +88,7 @@ public class ProjectServiceImpl implements ProjectService {
      *
      */
     public ProjectDTO searchProjectById(int id) {
-        Project project = projectDAO.retrieveProjectById(id);
+        Project project = projectDAO.findById(id).orElse(null);
         return (null != project) 
                 ? ProjectHelper.convertProjectIntoProjectDTO(project)
                 : null;
@@ -104,14 +105,10 @@ public class ProjectServiceImpl implements ProjectService {
      *
      */
     public int updateProject(ProjectDTO projectDTO) {
-        Project project = projectDAO.updateProject(ProjectHelper
+        Project project = projectDAO.save(ProjectHelper
                                   .convertProjectDTOIntoProject(
                                   projectDTO));
-
-        if (null != project) {
-            return project.getId();
-        }
-        return 0;
+        return project.getId();
     }
 
     /**
@@ -125,7 +122,8 @@ public class ProjectServiceImpl implements ProjectService {
      *
      */
     public int deleteProjectById(int id) {
-        return projectDAO.deleteProjectById(id);
+        projectDAO.deleteById(id);
+        return id;
     }
 
 }

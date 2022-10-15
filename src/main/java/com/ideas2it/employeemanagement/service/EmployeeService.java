@@ -84,25 +84,8 @@ public interface EmployeeService {
      * @return deleted id
      *
      */
+
     public int deleteEmployeeById(int id);
-
-    /**
-     * <p>
-     *   Check mobile number duplication
-     * </p>
-     *
-     * @return list of mobile numbers
-     */
-    public List<Long> checkDuplicate();
-
-    /**
-     * <p>
-     *   Check email id duplication
-     * </p>
-     *
-     * @return list of email id
-     */
-    public List<String> checkDuplicateEmail();
 }
 
 

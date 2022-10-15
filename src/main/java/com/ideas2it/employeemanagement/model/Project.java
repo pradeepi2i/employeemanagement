@@ -1,5 +1,8 @@
 package com.ideas2it.employeemanagement.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -10,6 +13,9 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 @Entity
 @Table(name = "project")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Project {
 
     @Id
@@ -27,51 +33,11 @@ public class Project {
             inverseJoinColumns = {@JoinColumn(name = "employee_id")})
     private Set<Employee> employees;
 
-    public Project() {}
-
     public Project(String name, String domain,
             double cost, String description) {
         this.name = name;
         this.domain = domain;
         this.cost = cost;
-        this.description = description;
-    }
-
-    // setters and getters
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-    
-    public double getCost() {
-        return cost;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-
-    public String getDomain() {
-        return domain;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
     }
 

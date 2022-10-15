@@ -6,27 +6,19 @@
 
 package com.ideas2it.employeemanagement.service.impl;
 
-import com.ideas2it.employeemanagement.configuration.EmployeeDetails;
-import com.ideas2it.employeemanagement.dao.EmployeeDAO;
+import com.ideas2it.employeemanagement.repository.EmployeeDAO;
 import com.ideas2it.employeemanagement.dto.EmployeeDTO;
-import com.ideas2it.employeemanagement.exception.EmployeeException;
 import com.ideas2it.employeemanagement.helper.EmployeeHelper;
 import com.ideas2it.employeemanagement.logger.LoggerConfiguration;
-import com.ideas2it.employeemanagement.model.Address;
 import com.ideas2it.employeemanagement.model.Employee;
-import com.ideas2it.employeemanagement.model.Mobile;
-import com.ideas2it.employeemanagement.model.WorkPlace;
 import com.ideas2it.employeemanagement.service.EmployeeService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -64,13 +56,10 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
      */
     public int addEmployee(EmployeeDTO employeeDTO) {
 
-        Employee employee =  employeeDAO.insertEmployee(EmployeeHelper
+        Employee employee =  employeeDAO.save(EmployeeHelper
                                      .convertEmployeeDTOIntoEmployee(
                                      employeeDTO));
-        if (null != employee) {
-            return employee.getId();
-        }
-        return 0;
+        return employee.getId();
     }
 
     /**
@@ -81,8 +70,13 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
      * @return all employees
      */
     public Map<Integer, EmployeeDTO> displayAllEmployees() {
-        return employeeDAO.retrieveAllEmployees().entrySet().stream()
-                .collect(Collectors.toMap(employee -> employee.getKey(),
+        Map<Integer,Employee> employees = new HashMap<>();
+
+        for (Employee employee : employeeDAO.findAll()) {
+            employees.put(employee.getId(), employee);
+        }
+        return employees.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
                 employee -> EmployeeHelper
                 .convertEmployeeIntoEmployeeDTO(employee.getValue())));
     }
@@ -98,7 +92,7 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
      *
      */
     public EmployeeDTO searchEmployeeById(int id) { 
-        Employee employee = employeeDAO.retrieveEmployeeById(id);
+        Employee employee = employeeDAO.findById(id).orElse(null);
         return (null != employee) 
                 ? EmployeeHelper.convertEmployeeIntoEmployeeDTO(employee)
                 : null;
@@ -115,13 +109,10 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
      *
      */
     public int updateEmployee(EmployeeDTO employeeDTO) {  
-        Employee employee = employeeDAO.updateEmployee(EmployeeHelper
+        Employee employee = employeeDAO.save(EmployeeHelper
                                     .convertEmployeeDTOIntoEmployee(
                                     employeeDTO));
-        if (null != employee) {
-            return employee.getId();
-        }
-        return 0;
+        return employee.getId();
     }
 
     /**
@@ -135,41 +126,19 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
      *
      */
     public int deleteEmployeeById(int id) {
-        return employeeDAO.deleteEmployeeById(id);
-    }
-
-    /**
-     * <p>
-     *   Check mobile number duplication
-     * </p>
-     *
-     * @return list of mobile numbers
-     */
-    public List<Long> checkDuplicate() {
-        return employeeDAO.checkDuplicate();
-    }
-
-    /**
-     * <p>
-     *   Check email id duplication
-     * </p>
-     *
-     * @return list of email id
-     */
-    public List<String> checkDuplicateEmail() {
-        return employeeDAO.checkDuplicateEmail();
+         employeeDAO.deleteById(id);
+         return id;
     }
 
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         logger.info("loadUserByName method() in service");
-        Employee employee = employeeDAO.retrieveEmployeeById(Integer.parseInt(id));
+        Employee employee = employeeDAO.findById(Integer.parseInt(id)).orElse(null);
+
         if (null == employee) {
             throw new UsernameNotFoundException("User with user id" + id + " not found");
         }
-        //return new EmployeeDetails(EmployeeHelper.convertEmployeeIntoEmployeeDTO(employee));
-
         logger.info("In service loadUserByName() " + employee.getFirstName());
-        return new User(id, employee.getFirstName(), new ArrayList<>());
+        return new User(Integer.toString(employee.getId()), employee.getFirstName(), new ArrayList<>());
     }
 }

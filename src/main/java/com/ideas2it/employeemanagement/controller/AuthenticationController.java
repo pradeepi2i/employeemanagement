@@ -27,13 +27,14 @@ public class AuthenticationController {
     private static Logger logger = LoggerConfiguration
             .getInstance("AuthenticationController.class");
 
+
     @GetMapping("/")
     public ModelAndView login() {
         logger.info("In AuthController login()");
         return new ModelAndView("login");
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ModelAndView createAuthenticationToken(@RequestParam("userId") int userId,
             @RequestParam("password") String password) throws Exception {
         try {
@@ -51,6 +52,11 @@ public class AuthenticationController {
 
     @GetMapping("/logout")
     public ModelAndView logout() {
-        return new ModelAndView("/login");
+        return new ModelAndView("/home");
+    }
+
+    @GetMapping("/error")
+    public ModelAndView error() {
+        return new ModelAndView("index");
     }
 }

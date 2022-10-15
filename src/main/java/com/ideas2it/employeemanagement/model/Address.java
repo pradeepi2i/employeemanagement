@@ -6,6 +6,8 @@
 
 package com.ideas2it.employeemanagement.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -23,6 +25,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "address")
+@Getter
+@Setter
 public class Address {
 
     @Id
@@ -45,80 +49,6 @@ public class Address {
     private String stateName;
     @Column(name = "country_name")
     private String countryName;
-
-    // setters and getters
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setDoorNumber(String doorNumber) {
-        this.doorNumber = doorNumber;
-    } 
-
-    public String getDoorNumber() {
-        return this.doorNumber;
-    }
-
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
-    }
-
-    public String getStreetName() {
-        return this.streetName;
-    }
- 
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
-    }
-
-    public String getCityName() {
-        return this.cityName;
-    }
-
-    public void setAddressType(String addressType) {
-        this.addressType = addressType;
-    }
-
-    public String getAddressType() {
-        return this.addressType;
-    }
-
-    public void setDistrictName(String districtName) {
-        this.districtName = districtName;
-    }
-
-    public String getDistrictName() {
-        return this.districtName;
-    }
-
-    public void setStateName(String stateName) {
-        this.stateName = stateName;
-    }
-
-    public String getStateName() {
-        return this.stateName;
-    }
-
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
-    }
-
-    public String getCountryName() {
-        return this.countryName;
-    }
-
-    public void setPostalCode(int postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public int getPostalCode() {
-        return this.postalCode;
-    }
 
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

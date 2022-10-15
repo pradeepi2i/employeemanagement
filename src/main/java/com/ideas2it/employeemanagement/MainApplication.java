@@ -8,6 +8,9 @@ package com.ideas2it.employeemanagement;
 
 import com.ideas2it.employeemanagement.logger.LoggerConfiguration;
 import org.apache.log4j.Logger;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 /**
  * <p>
@@ -19,10 +22,8 @@ import org.apache.log4j.Logger;
  *   @author : Pradeep
  * </p>
  */
-
+@SpringBootApplication /*(exclude = {SecurityAutoConfiguration.class})*/
 public class MainApplication {
-
-    private static Logger logger = LoggerConfiguration.getInstance("MainApplication.class");
 
     /**
      * <p>
@@ -34,6 +35,10 @@ public class MainApplication {
      *
      */
     public static void main(String[] args) {
-       logger.info("Running main");
+        try {
+            SpringApplication.run(MainApplication.class, args);
+        } catch (Exception e) {
+            e.printStackTrace();}
+
     }
 }

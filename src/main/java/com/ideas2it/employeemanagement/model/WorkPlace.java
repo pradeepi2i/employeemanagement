@@ -6,6 +6,8 @@
 
 package com.ideas2it.employeemanagement.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -22,6 +24,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "work_place")
+@Getter
+@Setter
 public class WorkPlace {
 
     @Id
@@ -31,22 +35,5 @@ public class WorkPlace {
     private int workPlaceId;
     @Column(name = "floor_number")
     private int floorNumber;
-    
-    // setters and getters
 
-    public void setFloorNumber(int floorNumber) {
-        this.floorNumber = floorNumber;
-    }
-
-    public int getFloorNumber() {
-        return floorNumber;
-    }
-
-    public void setWorkPlaceId(int workPlaceId) {
-        this.workPlaceId = workPlaceId;
-    }
-
-    public int getWorkPlaceId() {
-        return workPlaceId;
-    }
 }

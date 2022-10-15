@@ -25,7 +25,7 @@ import java.io.IOException;
  *   @author : Pradeep
  * </p>
  */
-@Component
+//@Component
 public class AuthenticationFilter implements Filter {
 
     private static Logger logger = LoggerConfiguration

@@ -6,15 +6,14 @@
 
 package com.ideas2it.employeemanagement.model;
 
-import org.hibernate.annotations.Cascade;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
-import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 /**
  * <p>
@@ -28,6 +27,8 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
  */
 @Entity
 @Table(name = "employee")
+@Getter
+@Setter
 public class Employee {
 
     @Id
@@ -72,158 +73,5 @@ public class Employee {
     @ManyToMany(mappedBy = "employees", fetch = FetchType.EAGER)
     private Set<Project> projects;
 
-    // setters and getters
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {	
-        return this.id;
-    }
-
-    public void setCompanyName(String companyName) {
-        Employee.companyName = companyName;
-    }   
-
-    public String getCompanyName() {      
-        return companyName;
-    }
-
-    public void setBankName(String bankName) {
-        Employee.bankName = bankName;
-    }   
-
-    public String getBankName() {      
-        return bankName;
-    }
-    
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }   
-
-    public String getFirstName() {      
-        return this.firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }   
-
-    public String getLastName() {      
-        return this.lastName;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getGender() {
-        return this.gender;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return this.dateOfBirth;
-    }
-
-    public void setBloodGroup(String bloodGroup) {
-        this.bloodGroup = bloodGroup;
-    }
-
-    public String getBloodGroup() {
-        return this.bloodGroup;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
- 
-    public String getEmailId() {
-        return this.emailId;
-    }
-
-    public void setDateOfJoining(LocalDate dateOfJoining) {
-        this.dateOfJoining = dateOfJoining;
-    }
-
-    public LocalDate getDateOfJoining() {
-        return this.dateOfJoining;
-    }
-
-    public void setAccountNumber(long accountNumber) {
-        this.accountNumber = accountNumber;
-    }
- 
-    public long getAccountNumber() {
-        return this.accountNumber;       
-    }
-
-    public void setIfscCode(String ifscCode) {
-        this.ifscCode = ifscCode;
-    }
-
-    public String getIfscCode() {
-        return this.ifscCode;
-    } 
-     
-    public void setDesignation(String designation) {
-        this.designation = designation;
-    }
-
-    public String getDesignation() {
-        return this.designation;
-    } 
-
-    public void setPreviousExperience(float previousExperience) {
-        this.previousExperience = previousExperience;
-    }
-
-    public float getPreviousExperience() {
-        return this.previousExperience;
-    }
-    
-    public void setSalary(float salary) {
-        this.salary = salary;
-    }
-
-    public float getSalary() {
-        return this.salary;
-    }
-
-    public void setWorkPlace(WorkPlace workPlace) {
-        this.workPlace = workPlace;
-    }
-
-    public WorkPlace getWorkPlace() {
-        return this.workPlace;
-    }
-
-    public void setMobileNumbers(List<Mobile> mobileNumbers) {
-        this.mobileNumbers = mobileNumbers;
-    }
-
-    public List<Mobile> getMobileNumbers() {
-        return this.mobileNumbers;
-    }
-
-    public void setAddresses(Set<Address> addresses) {
-        this.addresses = addresses;
-    }
-
-    public Set<Address> getAddresses() {
-        return this.addresses;
-    }
-
-    public void setProjects(Set<Project> projects) {
-        this.projects = projects;
-    }
-
-    public Set<Project> getProjects() {
-        return this.projects;
-    }
     
 }

@@ -6,6 +6,8 @@
 
 package com.ideas2it.employeemanagement.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -23,6 +25,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "mobile")
+@Getter
+@Setter
 public class Mobile {
 
     @Id
@@ -34,40 +38,6 @@ public class Mobile {
     @Column(name = "country_code")
     private String countryCode;
     private String type;
-    
-    // setters and getters
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    public String getCountryCode() {
-        return this.countryCode;
-    }
-
-    public void setMobileNumber(long mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
-
-    public long getMobileNumber() {
-        return this.mobileNumber; 
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return this.type;
-    }
 
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
