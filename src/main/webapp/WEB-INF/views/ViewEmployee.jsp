@@ -17,5 +17,10 @@ ${mobiles}<br>
 ${projects}<br>
 ${work}
 
+
+<br>
+<form action = "employee" method = "post">
+<input type = "submit" value = "Employee Management">
+</form> <br>
 </body>
 </html>

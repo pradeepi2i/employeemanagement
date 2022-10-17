@@ -22,7 +22,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
  *   @author : Pradeep
  * </p>
  */
-@SpringBootApplication /*(exclude = {SecurityAutoConfiguration.class})*/
+@SpringBootApplication (exclude = {SecurityAutoConfiguration.class})
 public class MainApplication {
 
     /**

@@ -3,7 +3,6 @@ package com.ideas2it.employeemanagement.security;
 import com.ideas2it.employeemanagement.logger.LoggerConfiguration;
 import com.ideas2it.employeemanagement.service.impl.EmployeeServiceImpl;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,16 +20,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     private static Logger logger = LoggerConfiguration
                 .getInstance("AuthenticationSecurityConfiguration.class");
-    @Autowired
-    private JWTCustomFilter jwtCustomFilter;
-    @Autowired
-    private EmployeeServiceImpl employeeService;
 
-    @Autowired
+    private JWTCustomFilter jwtCustomFilter;
+    private EmployeeServiceImpl employeeService;
     public UserDetailsService userDetailsService;
+
+    public ApplicationSecurityConfig(JWTCustomFilter jwtCustomFilter,
+            EmployeeServiceImpl employeeService,
+            UserDetailsService userDetailsService) {
+        this.jwtCustomFilter = jwtCustomFilter;
+        this.employeeService = employeeService;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

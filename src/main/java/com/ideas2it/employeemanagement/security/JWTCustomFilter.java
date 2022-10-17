@@ -3,7 +3,6 @@ package com.ideas2it.employeemanagement.security;
 import com.ideas2it.employeemanagement.logger.LoggerConfiguration;
 import com.ideas2it.employeemanagement.service.impl.EmployeeServiceImpl;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,28 +21,35 @@ public class JWTCustomFilter extends OncePerRequestFilter {
 
     private static Logger logger = LoggerConfiguration
                 .getInstance("JWTCustomFilter.class");
-    @Autowired
+
     private EmployeeServiceImpl employeeServiceImpl;
-    @Autowired
     private JWTUtil jwtUtil;
+
+    public JWTCustomFilter(EmployeeServiceImpl employeeServiceImpl, JWTUtil jwtUtil) {
+        this.employeeServiceImpl = employeeServiceImpl;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
             HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String header = request.getHeader("Authorization");
+        String header = (String) request.getSession().getAttribute("Authorization");
         logger.info("In doFilterInternal()");
         String jwtToken = null;
         String userId = null;
+        logger.info("Header in request " + header);
 
         if (null != header && header.startsWith("Bearer")) {
-            logger.info("In doFilterInternal() ");
+            logger.info("In doFilterInternal() header != null " + header);
             jwtToken = header.substring(6);
             userId = jwtUtil.extractUserId(jwtToken);
+            logger.info(userId);
         }
 
-        if (null != userId && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (null != userId && null == SecurityContextHolder.getContext().getAuthentication()) {
             UserDetails userDetails = this.employeeServiceImpl.loadUserByUsername(userId);
+            logger.info("In doFilterInternal() userDetails = " + userDetails);
 
             if (jwtUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
@@ -53,15 +58,12 @@ public class JWTCustomFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource()
                         .buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
                 filterChain.doFilter(request,response);
             }
         } else {
-            logger.info("In request dispatcher");
-            request.getRequestDispatcher("/").forward(request, response);
+            logger.info("If statement fails " + header);
+            request.getRequestDispatcher("login").forward(request, response);
         }
-
-
-
     }
-
 }
