@@ -67,8 +67,9 @@ public class AuthenticationController {
     }
 
     @GetMapping("/logout")
-    public ModelAndView logout() {
-        return new ModelAndView("/home");
+    public ModelAndView logout(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return new ModelAndView("/login");
     }
 
     @GetMapping("/error")

@@ -35,10 +35,6 @@ public class MainApplication {
      *
      */
     public static void main(String[] args) {
-        try {
-            SpringApplication.run(MainApplication.class, args);
-        } catch (Exception e) {
-            e.printStackTrace();}
-
+        SpringApplication.run(MainApplication.class, args);
     }
 }
